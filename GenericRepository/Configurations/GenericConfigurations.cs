@@ -1,0 +1,88 @@
+﻿
+using GenericRepositories.Context;
+using GenericRepositories.Contracts.Generic;
+using GenericRepositories.Contracts.GenericCleanArchitecture;
+using GenericRepositories.Repositories.Generic;
+using GenericRepositories.Repositories.GenericCleanArchitecture;
+using GenericRepositories.Settings;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+
+namespace GenericRepositories.Configurations
+{
+    public static class GenericDbContext
+    {
+        public static void AddGenericConfigurations(this IServiceCollection services,
+            DbConnectionSetting setting, AssembliesSetting assemblies)
+        {
+            services.AddGenericDbContex(setting, assemblies);
+            services.AddLifeCycles();
+        }
+
+        private static void AddGenericDbContex(this IServiceCollection services,
+            DbConnectionSetting setting, AssembliesSetting assemblies)
+        {
+
+            services.AddSingleton(new AssembliesSetting
+            {
+                EntitiesAssemblies = assemblies.EntitiesAssemblies,
+                EntitiesConfigurationAssemblies = assemblies.EntitiesConfigurationAssemblies
+            });
+
+
+            if (setting != null &&
+                !string.IsNullOrEmpty(setting.CommandConnectionString))
+                services.AddDbContext<GenericCommandDbContext>(option =>
+                {
+                    option.UseSqlServer(setting.CommandConnectionString);
+                });
+            else if (setting != null &&
+                !string.IsNullOrEmpty(setting.QueryConnectionString))
+                services.AddDbContext<GenericCommandDbContext>(option =>
+                {
+                    option.UseSqlServer(setting.QueryConnectionString);
+                });
+
+
+            if (setting != null &&
+                !string.IsNullOrEmpty(setting.QueryConnectionString))
+                services.AddDbContext<GenericQueryDbContext>(option =>
+                {
+                    option.UseSqlServer(setting.QueryConnectionString);
+                });
+            else if(setting != null &&
+                !string.IsNullOrEmpty(setting.CommandConnectionString))
+                services.AddDbContext<GenericQueryDbContext>(option =>
+                {
+                    option.UseSqlServer(setting.CommandConnectionString);
+                });
+
+
+        }
+
+        private static void AddLifeCycles(this IServiceCollection services)
+        {
+            #region Generic scopes lifetime
+            services.AddScoped(typeof(IRepositorySyncronize<>), typeof(RepositorySyncronize<>));
+            services.AddScoped(typeof(IRepositoryPublicAsyncEFCore<>), typeof(RepositoryPublicAsyncEFCore<>));
+            services.AddScoped(typeof(IRepositoryPublicAsyncDapper<>), typeof(RepositoryPublicAsyncDapper<>));
+            services.AddScoped(typeof(IRepositoryPublicAsyncDtoEFCore<,>), typeof(RepositoryPublicAsyncDtoEFCore<,>));
+            #endregion
+
+            #region Gemeric Scope Clean Architectur Repsitory Lifetime
+            services.AddScoped(typeof(IRepositoryTransaction), typeof(RepositoryTransaction));
+            services.AddScoped(typeof(IRepositoryAdd<>), typeof(RepositoryAdd<>));
+            services.AddScoped(typeof(IRepositoryUpdate<>), typeof(RepositoryUpdate<>));
+            services.AddScoped(typeof(IRepositoryGet<>), typeof(RepositoryGet<>));
+            services.AddScoped(typeof(IRepositoryDelete<>), typeof(RepositoryDelete<>));
+            #endregion
+
+        }
+
+
+    }
+}
