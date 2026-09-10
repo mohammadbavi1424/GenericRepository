@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using GenericRepositories.Context;
-using GenericRepositories.Contracts.Generic;
-using GenericRepositories.ParentEntities;
-using GenericRepositories.Utilities;
+using GenericRepository.Context;
+using GenericRepository.Contracts.Generic;
+using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
-using System.Reflection;
 
-namespace GenericRepositories.Repositories.Generic
+namespace GenericRepository.Repositories.Generic
 {
     public class RepositoryPublicAsyncDtoEFCore<TEntity, TDto> :
         RepositoryPublicAsyncEFCore<TEntity>,

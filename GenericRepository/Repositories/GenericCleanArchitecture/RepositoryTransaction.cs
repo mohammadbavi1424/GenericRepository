@@ -1,11 +1,8 @@
-﻿using GenericRepositories.Context;
-using GenericRepositories.Contracts.GenericCleanArchitecture;
+﻿using GenericRepository.Context;
+using GenericRepository.Contracts.GenericCleanArchitecture;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GenericRepositories.Repositories.GenericCleanArchitecture
+namespace GenericRepository.Repositories.GenericCleanArchitecture
 {
     public class RepositoryTransaction : IRepositoryTransaction
     {

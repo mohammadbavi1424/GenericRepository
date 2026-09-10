@@ -1,4 +1,4 @@
-﻿namespace GenericRepositories.Contracts.GenericCleanArchitecture
+﻿namespace GenericRepository.Contracts.GenericCleanArchitecture
 {
     public interface IRepositoryAdd<TEntity>
         where TEntity : class

@@ -1,15 +1,13 @@
-﻿using GenericRepositories.Context;
-using GenericRepositories.Contracts.Generic;
-using GenericRepositories.Filters;
-using GenericRepositories.ParentEntities;
-using GenericRepositories.Utilities;
+﻿using GenericRepository.Context;
+using GenericRepository.Contracts.Generic;
+using GenericRepository.Filters;
+using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq.Expressions;
-using System.Reflection;
 
-namespace GenericRepositories.Repositories.Generic
+namespace GenericRepository.Repositories.Generic
 {
     public class RepositoryPublicAsyncEFCore<TEntity> :
         IRepositoryPublicAsyncEFCore<TEntity> where TEntity : class
@@ -314,6 +312,7 @@ namespace GenericRepositories.Repositories.Generic
 
 
         #endregion
+
 
 
 

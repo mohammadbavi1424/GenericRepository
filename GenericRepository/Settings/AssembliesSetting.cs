@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace GenericRepositories.Settings
+namespace GenericRepository.Settings
 {
     public class AssembliesSetting
     {

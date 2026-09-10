@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GenericRepositories.Contracts.GenericCleanArchitecture
+namespace GenericRepository.Contracts.GenericCleanArchitecture
 {
     public interface IRepositoryUpdate<TEntity>
         where TEntity : class

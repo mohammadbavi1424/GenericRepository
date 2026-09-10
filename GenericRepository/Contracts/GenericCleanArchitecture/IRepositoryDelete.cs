@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using static Dapper.SqlMapper;
 
-namespace GenericRepositories.Contracts.GenericCleanArchitecture
+namespace GenericRepository.Contracts.GenericCleanArchitecture
 {
     public interface IRepositoryDelete<TEntity> 
         where TEntity : class

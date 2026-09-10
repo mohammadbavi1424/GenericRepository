@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace GenericRepositories.Utilities
+namespace GenericRepository.Utilities
 {
     public static class ConvertorObjects
     {

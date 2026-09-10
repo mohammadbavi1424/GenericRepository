@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace GenericRepositories.Utilities
+namespace GenericRepository.Utilities
 {
     public static class Assert
     {

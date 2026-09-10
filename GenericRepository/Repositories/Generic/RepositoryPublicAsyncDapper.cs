@@ -1,17 +1,14 @@
 ﻿using Dapper;
-using GenericRepositories.Context;
-using GenericRepositories.Contracts.Generic;
-using GenericRepositories.Filters;
-using GenericRepositories.ParentEntities;
-using GenericRepositories.Settings;
+using GenericRepository.Context;
+using GenericRepository.Contracts.Generic;
+using GenericRepository.Filters;
+using GenericRepository.ParentEntities;
+using GenericRepository.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Reflection;
 
-namespace GenericRepositories.Repositories.Generic
+namespace GenericRepository.Repositories.Generic
 {
     public class RepositoryPublicAsyncDapper<TEntity> :
         IRepositoryPublicAsyncDapper<TEntity>
@@ -45,16 +42,14 @@ namespace GenericRepositories.Repositories.Generic
 
 
         private readonly HashSet<string> PropertyNames =
-            typeof(TEntity)
-                .GetProperties()
+            typeof(TEntity).GetProperties()
                 .Select(p => p.Name)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
 
 
 
-        public RepositoryPublicAsyncDapper(
-            GenericCommandDbContext dbCommandContext,
+        public RepositoryPublicAsyncDapper(GenericCommandDbContext dbCommandContext,
             DbConnectionSetting setting)
         {
             DbCommandContext = dbCommandContext;
@@ -64,8 +59,7 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Get By Id
 
-        public async Task<TEntity?> GetByIdQueryAsync(
-            params object[] ids)
+        public async Task<TEntity?> GetByIdQueryAsync( params object[] ids)
         {
             var sql = $"""
                 SELECT *
@@ -74,12 +68,9 @@ namespace GenericRepositories.Repositories.Generic
                   AND {GetIdProperty()} = @Id
                 """;
 
-            using var connection =
-                new SqlConnection(setting.QueryConnectionString);
+            using var connection = new SqlConnection(setting.QueryConnectionString);
 
-            return await connection.QueryFirstOrDefaultAsync<TEntity>(
-                sql,
-                new { Id = ids[0] });
+            return await connection.QueryFirstOrDefaultAsync<TEntity>(sql, new { Id = ids[0] });
         }
 
         #endregion
@@ -87,8 +78,7 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Get By Range Id
 
-        public async Task<GreadData<TEntity>> GetByRangIdQuerAsync(
-            params object[] ids)
+        public async Task<GreadData<TEntity>> GetByRangIdQuerAsync(params object[] ids)
         {
             var data = new GreadData<TEntity>();
 
@@ -105,12 +95,9 @@ namespace GenericRepositories.Repositories.Generic
                   AND {GetIdProperty()} IN @Ids
                 """;
 
-            using var connection =
-                new SqlConnection(setting.QueryConnectionString);
+            using var connection = new SqlConnection(setting.QueryConnectionString);
 
-            var result = await connection.QueryAsync<TEntity>(
-                sql,
-                new { Ids = ids });
+            var result = await connection.QueryAsync<TEntity>(sql, new { Ids = ids });
 
             data.Data = result;
 
@@ -123,12 +110,8 @@ namespace GenericRepositories.Repositories.Generic
         #region Get Query
 
         public virtual async Task<GreadData<TEntity>> GetByQueryAsync(
-            CancellationToken cancellationToken,
-            GreadData<TEntity> data)
-        => await GetPagedDataAsync(
-                data,
-                isDeleted: false,
-                cancellationToken);
+            CancellationToken cancellationToken, GreadData<TEntity> data)
+        => await GetPagedDataAsync(data, isDeleted: false, cancellationToken);
         
 
         #endregion
@@ -136,14 +119,9 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Get Deleted Items
 
-        public virtual async Task<GreadData<TEntity>>
-            GetByQueryDeletedItemsAsync(
-                CancellationToken cancellationToken,
-                GreadData<TEntity> data)
-        => await GetPagedDataAsync(
-                data,
-                isDeleted: true,
-                cancellationToken);
+        public virtual async Task<GreadData<TEntity>> GetByQueryDeletedItemsAsync(
+                CancellationToken cancellationToken, GreadData<TEntity> data)
+        => await GetPagedDataAsync(data, isDeleted: true, cancellationToken);
         
 
         #endregion
@@ -151,8 +129,7 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Get Deleted By Id
 
-        public async Task<GreadData<TEntity>>
-            GetByIdDeletedItemQueryAsync(params object[] ids)
+        public async Task<GreadData<TEntity>> GetByIdDeletedItemQueryAsync(params object[] ids)
         {
             var data = new GreadData<TEntity>();
 
@@ -164,13 +141,10 @@ namespace GenericRepositories.Repositories.Generic
                   AND {GetIdProperty()} = @Id
                 """;
 
-            using var connection =
-                new SqlConnection(setting.QueryConnectionString);
+            using var connection = new SqlConnection(setting.QueryConnectionString);
 
-            data.Entity =
-                await connection.QueryFirstOrDefaultAsync<TEntity>(
-                    sql,
-                    new { Id = ids[0] });
+            data.Entity = await connection.QueryFirstOrDefaultAsync<TEntity>(
+                sql, new { Id = ids[0] });
 
             return data;
         }
@@ -180,21 +154,16 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Insert
 
-        public async Task<bool> AddByDapperAsync(
-            TEntity entity)
+        public async Task<bool> AddByDapperAsync(TEntity entity)
         {
             var properties = typeof(TEntity)
                 .GetProperties()
                 .Where(p => p.Name != GetIdProperty())
                 .ToList();
 
-            var columns = string.Join(
-                ", ",
-                properties.Select(p => $"[{p.Name}]"));
+            var columns = string.Join(", ", properties.Select(p => $"[{p.Name}]"));
 
-            var parameters = string.Join(
-                ", ",
-                properties.Select(p => $"@{p.Name}"));
+            var parameters = string.Join(", ", properties.Select(p => $"@{p.Name}"));
 
             var sql = $"""
                 INSERT INTO [{GetSchema()}].[{TableName}]
@@ -203,13 +172,9 @@ namespace GenericRepositories.Repositories.Generic
                 ({parameters})
                 """;
 
-            using var connection =
-                new SqlConnection(setting.CommandConnectionString);
+            using var connection = new SqlConnection(setting.CommandConnectionString);
 
-            var affectedRows =
-                await connection.ExecuteAsync(
-                    sql,
-                    entity);
+            var affectedRows = await connection.ExecuteAsync(sql, entity);
 
             return affectedRows > 0;
         }
@@ -219,19 +184,14 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Update
 
-        public async Task<bool> UpdateByDapperAsync(
-            TEntity entity)
+        public async Task<bool> UpdateByDapperAsync(TEntity entity)
         {
-            
-
             var properties = typeof(TEntity)
                 .GetProperties()
                 .Where(p => p.Name != GetIdProperty())
                 .ToList();
 
-            var setClause = string.Join(
-                ", ",
-                properties.Select(p =>
+            var setClause = string.Join(", ", properties.Select(p =>
                     $"[{p.Name}] = @{p.Name}"));
 
             var sql = $"""
@@ -240,13 +200,9 @@ namespace GenericRepositories.Repositories.Generic
                 WHERE {GetIdProperty()} = @Id
                 """;
 
-            using var connection =
-                new SqlConnection(setting.CommandConnectionString);
+            using var connection = new SqlConnection(setting.CommandConnectionString);
 
-            var affectedRows =
-                await connection.ExecuteAsync(
-                    sql,
-                    entity);
+            var affectedRows = await connection.ExecuteAsync(sql, entity);
 
             return affectedRows > 0;
         }
@@ -266,13 +222,9 @@ namespace GenericRepositories.Repositories.Generic
                   AND IsDeleted = 0
                 """;
 
-            using var connection =
-                new SqlConnection(setting.CommandConnectionString);
+            using var connection = new SqlConnection(setting.CommandConnectionString);
 
-            var affectedRows =
-                await connection.ExecuteAsync(
-                    sql,
-                    new { Id = ids[0] });
+            var affectedRows = await connection.ExecuteAsync(sql, new { Id = ids[0] });
 
             return affectedRows > 0;
         }
@@ -291,13 +243,9 @@ namespace GenericRepositories.Repositories.Generic
                   AND IsDeleted = 1
                 """;
 
-            using var connection =
-                new SqlConnection(setting.CommandConnectionString);
+            using var connection = new SqlConnection(setting.CommandConnectionString);
 
-            var affectedRows =
-                await connection.ExecuteAsync(
-                    sql,
-                    new { Id = ids[0] });
+            var affectedRows = await connection.ExecuteAsync(sql, new { Id = ids[0] });
 
             return affectedRows > 0;
         }
@@ -325,8 +273,7 @@ namespace GenericRepositories.Repositories.Generic
                 AS BIT)
                 """;
 
-            using var connection =
-                new SqlConnection(setting.QueryConnectionString);
+            using var connection = new SqlConnection(setting.QueryConnectionString);
 
             return await connection.ExecuteScalarAsync<bool>(
                 sql,
@@ -338,8 +285,7 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Count
 
-        public async Task<int> CountAsync(
-            CancellationToken cancellationToken = default)
+        public async Task<int> CountAsync(CancellationToken cancellationToken = default)
         {
             var sql = $"""
                 SELECT COUNT(1)
@@ -347,15 +293,11 @@ namespace GenericRepositories.Repositories.Generic
                 WHERE IsDeleted = 0
                 """;
 
-            using var connection =
-                new SqlConnection(setting.QueryConnectionString);
+            using var connection = new SqlConnection(setting.QueryConnectionString);
 
-            var command = new CommandDefinition(
-                sql,
-                cancellationToken: cancellationToken);
+            var command = new CommandDefinition(sql, cancellationToken: cancellationToken);
 
-            return await connection.ExecuteScalarAsync<int>(
-                command);
+            return await connection.ExecuteScalarAsync<int>(command);
         }
 
         #endregion
@@ -363,16 +305,14 @@ namespace GenericRepositories.Repositories.Generic
 
         #region Private Pagination
 
-        private async Task<GreadData<TEntity>> GetPagedDataAsync(
-            GreadData<TEntity> data,
-            bool isDeleted,
-            CancellationToken cancellationToken)
+        private async Task<GreadData<TEntity>> GetPagedDataAsync(GreadData<TEntity> data,
+            bool isDeleted, CancellationToken cancellationToken)
         {
             if (data.Page <= 0)
                 data.Page = 1;
 
-            if (data.PageSize <= 0)
-                data.PageSize = 20;
+            if (data.PageSize <= 10)
+                data.PageSize = 10;
 
             var parameters = new DynamicParameters();
 
@@ -393,10 +333,6 @@ namespace GenericRepositories.Repositories.Generic
 
                 foreach (var filter in data.Filter)
                 {
-                    /*
-                     * Property Name نمی‌تواند Parameter باشد.
-                     * بنابراین باید Whitelist شود.
-                     */
                     if (!PropertyNames.Contains(filter.Property))
                     {
                         throw new ArgumentException(
@@ -417,17 +353,10 @@ namespace GenericRepositories.Repositories.Generic
                 }
             }
 
-
-
-            // تعداد کل رکوردها
-
             var countSql = $"""
                 SELECT COUNT(1)
                 {sql};
                 """;
-
-
-            // Pagination
 
             var offset =
                 (data.Page - 1) * data.PageSize;
@@ -443,35 +372,21 @@ namespace GenericRepositories.Repositories.Generic
                 FETCH NEXT @PageSize ROWS ONLY;
                 """;
 
-            using var connection =
-                new SqlConnection(setting.QueryConnectionString);
+            using var connection = new SqlConnection(setting.QueryConnectionString);
 
             await connection.OpenAsync(cancellationToken);
 
+            var command = new CommandDefinition($"{countSql}\n{dataSql}",
+                parameters, cancellationToken: cancellationToken);
 
-            // Count + Data در یک Round Trip
+            using var multi = await connection.QueryMultipleAsync(command);
 
-            var command = new CommandDefinition(
-                $"{countSql}\n{dataSql}",
-                parameters,
-                cancellationToken: cancellationToken);
+            data.Count = await multi.ReadFirstAsync<int>();
 
-            using var multi =
-                await connection.QueryMultipleAsync(command);
+            data.Data = (await multi.ReadAsync<TEntity>()).ToList();
 
-            data.Count =
-                await multi.ReadFirstAsync<int>();
-
-            data.Data =
-                (await multi.ReadAsync<TEntity>())
-                .ToList();
-
-            data.PageCount =
-                data.Count == 0
-                    ? 0
-                    : (int)Math.Ceiling(
-                        (double)data.Count /
-                        data.PageSize);
+            data.PageCount = data.Count == 0 ? 0 : (int)Math.Ceiling(
+                        (double)data.Count / data.PageSize);
 
             return data;
         }

@@ -1,7 +1,7 @@
-﻿using GenericRepositories.Filters;
+﻿using GenericRepository.Filters;
 using System.Linq.Expressions;
 
-namespace GenericRepositories.Contracts.GenericCleanArchitecture
+namespace GenericRepository.Contracts.GenericCleanArchitecture
 {
     public interface IRepositoryGet<TEntity> 
         where TEntity : class 

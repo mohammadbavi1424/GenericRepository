@@ -1,7 +1,7 @@
-﻿using GenericRepositories.Filters;
+﻿using GenericRepository.Filters;
 using System.Linq.Expressions;
 
-namespace GenericRepositories.Contracts.Generic
+namespace GenericRepository.Contracts.Generic
 {
     public interface IRepositoryPublicAsyncEFCore<TEntity> 
         where TEntity : class
@@ -26,6 +26,10 @@ namespace GenericRepositories.Contracts.Generic
         Task BeginTransactionAsync(CancellationToken cancellationToken);
         Task CommitTransactionAsync(CancellationToken cancellationToken);
         Task RollbackTransactionAsync(CancellationToken cancellationToken);
+        //Task AddBulkAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true);
+        //Task UpdateBulkAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true);
+        //Task DeleteBulkAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true);
+
 
 
 

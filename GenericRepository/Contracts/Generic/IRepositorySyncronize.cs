@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace GenericRepositories.Contracts.Generic
+namespace GenericRepository.Contracts.Generic
 {
     public interface IRepositorySyncronize<TEntity> where TEntity : class
     {

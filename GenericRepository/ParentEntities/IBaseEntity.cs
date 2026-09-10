@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GenericRepositories.ParentEntities
+namespace GenericRepository.ParentEntities
 {
     public interface IBaseEntity
     {
