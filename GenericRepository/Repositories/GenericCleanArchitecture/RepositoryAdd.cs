@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using GenericRepositories.Context;
-using GenericRepositories.Contracts.GenericCleanArchitecture;
-using GenericRepositories.Utilities;
+using GenericRepository.Context;
+using GenericRepository.Contracts.GenericCleanArchitecture;
+using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
-using static Dapper.SqlMapper;
 
 namespace GenericRepositories.Repositories.GenericCleanArchitecture
 {

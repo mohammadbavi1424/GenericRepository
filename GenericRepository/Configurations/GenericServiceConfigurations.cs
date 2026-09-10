@@ -1,18 +1,14 @@
-﻿
-using GenericRepositories.Context;
-using GenericRepositories.Contracts.Generic;
-using GenericRepositories.Contracts.GenericCleanArchitecture;
-using GenericRepositories.Repositories.Generic;
-using GenericRepositories.Repositories.GenericCleanArchitecture;
-using GenericRepositories.Settings;
+﻿using GenericRepositories.Repositories.GenericCleanArchitecture;
+using GenericRepository.Context;
+using GenericRepository.Contracts.Generic;
+using GenericRepository.Contracts.GenericCleanArchitecture;
+using GenericRepository.Repositories.Generic;
+using GenericRepository.Repositories.GenericCleanArchitecture;
+using GenericRepository.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
-namespace GenericRepositories.Configurations
+namespace GenericRepository.Configurations
 {
     public static class GenericDbContext
     {

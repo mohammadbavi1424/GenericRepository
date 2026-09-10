@@ -1,18 +1,12 @@
 ﻿using AutoMapper;
-using GenericRepositories.Context;
-using GenericRepositories.Contracts.GenericCleanArchitecture;
-using GenericRepositories.Filters;
-using GenericRepositories.Utilities;
+using GenericRepository.Context;
+using GenericRepository.Contracts.GenericCleanArchitecture;
+using GenericRepository.Filters;
+using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace GenericRepositories.Repositories.GenericCleanArchitecture
+namespace GenericRepository.Repositories.GenericCleanArchitecture
 {
     public class RepositoryGet<TEntity> :
         IRepositoryGet<TEntity>

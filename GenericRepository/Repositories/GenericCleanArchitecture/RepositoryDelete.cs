@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using GenericRepositories.Context;
-using GenericRepositories.Contracts.GenericCleanArchitecture;
-using GenericRepositories.Utilities;
+using GenericRepository.Context;
+using GenericRepository.Contracts.GenericCleanArchitecture;
+using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GenericRepositories.Repositories.GenericCleanArchitecture
+namespace GenericRepository.Repositories.GenericCleanArchitecture
 {
     public class RepositoryDelete<TEntity> :
         IRepositoryDelete<TEntity>

@@ -1,13 +1,13 @@
-﻿using GenericRepositories.ParentEntities;
-using GenericRepositories.Settings;
-using GenericRepositories.Utilities;
+﻿using GenericRepository.ParentEntities;
+using GenericRepository.Settings;
+using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace GenericRepositories.Context
+namespace GenericRepository.Context
 {
     public class GenericCommandDbContext : DbContext
     {

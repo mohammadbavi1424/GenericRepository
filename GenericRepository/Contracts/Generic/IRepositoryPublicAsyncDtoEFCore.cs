@@ -1,7 +1,6 @@
-﻿using GenericRepositories.ParentEntities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace GenericRepositories.Contracts.Generic
+namespace GenericRepository.Contracts.Generic
 {
     public interface IRepositoryPublicAsyncDtoEFCore<TEntity, TDto> :
         IRepositoryPublicAsyncEFCore<TEntity> 

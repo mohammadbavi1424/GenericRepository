@@ -1,6 +1,6 @@
-﻿using GenericRepositories.Filters;
+﻿using GenericRepository.Filters;
 
-namespace GenericRepositories.Contracts.Generic
+namespace GenericRepository.Contracts.Generic
 {
     public interface IRepositoryPublicAsyncDapper<TEntity> where TEntity : class
     {
