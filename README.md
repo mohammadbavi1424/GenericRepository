@@ -1,6 +1,6 @@
-MHB.GenericRepositories
+MHBavi.GenericRepositories
 
-MHB.GenericRepositories is a reusable and extensible generic repository framework for modern .NET applications.
+MHBavi.GenericRepositories is a reusable and extensible generic repository framework for modern .NET applications.
 
 The library is designed to reduce repetitive data-access code and provide a consistent infrastructure for applications using Entity Framework Core, Dapper, AutoMapper, and SQL Server.
 
@@ -170,7 +170,7 @@ dotnet add package MHB.GenericRepositories
 
 Or add the package manually:
 
-<PackageReference Include="MHB.GenericRepositories" Version="1.0.0" />
+<PackageReference Include="MHBavi.GenericRepositories" Version="1.2.1" />
 
 ---
 
@@ -926,7 +926,7 @@ Requirements
 
 The current package targets:
 
-.NET 8
+.NET 8,9,10
 
 Main technologies:
 
@@ -1040,6 +1040,8 @@ Package:
 "MHB.GenericRepositories"
 
 Target Framework:
+
+Dot NET Core 8,9,10
 
 ---
 
