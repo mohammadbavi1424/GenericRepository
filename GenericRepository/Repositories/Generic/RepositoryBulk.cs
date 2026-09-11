@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System.Data;
 using System.Data.Common;
 
-namespace GenericRepositories.Repositories.Bulk
+namespace GenericRepository.Repositories.Generic
 {
     public class RepositoryBulk<TEntity> : IRepositoryBulk<TEntity>
         where TEntity : class
@@ -27,10 +27,8 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="batchSize"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task BulkInsertAsync(
-            IEnumerable<TEntity> entities,
-            int batchSize = 10_000,
-            CancellationToken cancellationToken = default)
+        public async Task AddBulkAsync(IEnumerable<TEntity> entities,
+            int batchSize = 10_000, CancellationToken cancellationToken = default)
         {
             var entityList = entities?.ToList();
 
@@ -87,10 +85,8 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
 
-        public async Task BulkUpdateAsync(
-            IEnumerable<TEntity> entities,
-            int batchSize = 10_000,
-            CancellationToken cancellationToken = default)
+        public async Task UpdateBulkAsync(IEnumerable<TEntity> entities,
+            int batchSize = 10_000, CancellationToken cancellationToken = default)
         {
             var entityList = entities?.ToList();
 
@@ -202,10 +198,8 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
 
-        public async Task BulkDeleteAsync(
-            IEnumerable<TEntity> entities,
-            int batchSize = 10_000,
-            CancellationToken cancellationToken = default)
+        public async Task DeleteBulkAsync(IEnumerable<TEntity> entities,
+            int batchSize = 10_000, CancellationToken cancellationToken = default)
         {
             var entityList = entities?.ToList();
 
@@ -312,10 +306,8 @@ namespace GenericRepositories.Repositories.Bulk
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
 
-        public async Task BulkSoftDeleteAsync(
-            IEnumerable<TEntity> entities,
-            int batchSize = 10_000,
-            CancellationToken cancellationToken = default)
+        public async Task SoftDeleteBulkAsync(IEnumerable<TEntity> entities,
+            int batchSize = 10_000, CancellationToken cancellationToken = default)
         {
             var entityList = entities?.ToList();
 
@@ -498,8 +490,7 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="properties"></param>
         /// <returns></returns>
 
-        private DataTable CreateDataTable(
-            IEnumerable<TEntity> entities,
+        private DataTable CreateDataTable(IEnumerable<TEntity> entities,
             IEnumerable<IProperty> properties)
         {
             var table = new DataTable();
@@ -545,11 +536,8 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="metadata"></param>
         /// <returns></returns>
 
-        private async Task CreateTempTableAsync(
-            SqlConnection connection,
-            DbTransaction transaction,
-            string tempTableName,
-            EntityMetadata metadata)
+        private async Task CreateTempTableAsync(SqlConnection connection,
+            DbTransaction transaction, string tempTableName, EntityMetadata metadata)
         {
             var columns = metadata.Properties
                 .Select(x =>
@@ -570,11 +558,8 @@ namespace GenericRepositories.Repositories.Bulk
         }
 
 
-        private async Task CreateKeyTempTableAsync(
-            SqlConnection connection,
-            DbTransaction transaction,
-            string tempTableName,
-            IProperty keyProperty)
+        private async Task CreateKeyTempTableAsync(SqlConnection connection,
+            DbTransaction transaction, string tempTableName, IProperty keyProperty)
         => ExecuteSqlAsync(
                 connection,
                 transaction,
@@ -596,9 +581,7 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="updateProperties"></param>
         /// <returns></returns>
 
-        private string BuildUpdateSql(
-            EntityMetadata metadata,
-            string tempTableName,
+        private string BuildUpdateSql(EntityMetadata metadata, string tempTableName,
             List<IProperty> updateProperties)
         {
             var tableName = BuildTableName(metadata);
@@ -632,11 +615,8 @@ namespace GenericRepositories.Repositories.Bulk
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
 
-        private async Task ExecuteSqlAsync(
-            SqlConnection connection,
-            DbTransaction transaction,
-            string sql,
-            CancellationToken cancellationToken)
+        private async Task ExecuteSqlAsync(SqlConnection connection,
+            DbTransaction transaction,string sql, CancellationToken cancellationToken)
         {
             await using var command =
                 new SqlCommand(
@@ -651,11 +631,8 @@ namespace GenericRepositories.Repositories.Bulk
         }
 
 
-        private async Task DropTempTableAsync(
-            SqlConnection connection,
-            DbTransaction transaction,
-            string tempTableName,
-            CancellationToken cancellationToken)
+        private async Task DropTempTableAsync(SqlConnection connection,
+            DbTransaction transaction, string tempTableName, CancellationToken cancellationToken)
         => ExecuteSqlAsync(
                 connection,
                 transaction,
@@ -671,8 +648,7 @@ namespace GenericRepositories.Repositories.Bulk
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
 
-        private string BuildTableName(
-            EntityMetadata metadata)
+        private string BuildTableName(EntityMetadata metadata)
         {
             var schema =
                 metadata.EntityType.GetSchema()

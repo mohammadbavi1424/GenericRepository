@@ -1,5 +1,4 @@
-﻿using GenericRepositories.Repositories.GenericCleanArchitecture;
-using GenericRepository.Context;
+﻿using GenericRepository.Context;
 using GenericRepository.Contracts.Generic;
 using GenericRepository.Contracts.GenericCleanArchitecture;
 using GenericRepository.Repositories.Generic;
@@ -18,6 +17,31 @@ namespace GenericRepository.Configurations
             services.AddGenericDbContex(setting, assemblies);
             services.AddLifeCycles();
         }
+
+        public static void AddGenericConfigurations(this IServiceCollection services,
+            string CommandDbConnectionString, string QueryDbConnectionString, AssembliesSetting assemblies)
+        {
+            DbConnectionSetting setting = new()
+            {
+                CommandConnectionString = CommandDbConnectionString,
+                QueryConnectionString = QueryDbConnectionString,
+            };
+            services.AddGenericDbContex(setting, assemblies);
+            services.AddLifeCycles();
+        }
+
+        public static void AddGenericConfigurations(this IServiceCollection services,
+            string ConnectionString, AssembliesSetting assemblies)
+        {
+            DbConnectionSetting setting = new()
+            {
+                CommandConnectionString = ConnectionString
+            };
+            services.AddGenericDbContex(setting, assemblies);
+            services.AddLifeCycles();
+        }
+
+
 
         private static void AddGenericDbContex(this IServiceCollection services,
             DbConnectionSetting setting, AssembliesSetting assemblies)
@@ -67,6 +91,7 @@ namespace GenericRepository.Configurations
             services.AddScoped(typeof(IRepositoryPublicAsyncEFCore<>), typeof(RepositoryPublicAsyncEFCore<>));
             services.AddScoped(typeof(IRepositoryPublicAsyncDapper<>), typeof(RepositoryPublicAsyncDapper<>));
             services.AddScoped(typeof(IRepositoryPublicAsyncDtoEFCore<,>), typeof(RepositoryPublicAsyncDtoEFCore<,>));
+            services.AddScoped(typeof(IRepositoryBulk<>), typeof(RepositoryBulk<>));
             #endregion
 
             #region Gemeric Scope Clean Architectur Repsitory Lifetime
