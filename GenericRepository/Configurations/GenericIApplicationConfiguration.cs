@@ -8,7 +8,7 @@ namespace GenericRepository.Configurations
     public static class GenericIApplicationConfiguration
     {
 
-        public static void GenericAppConfiguration(IApplicationBuilder app)
+        public static void GenericAppConfiguration(this IApplicationBuilder app)
         {
 
             using (var scop = app.ApplicationServices.CreateScope())
