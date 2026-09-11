@@ -1,4 +1,4 @@
-# MHB.GenericRepositories
+# MHBavi.GenericRepositories
 
 A reusable and extensible Generic Repository Framework for .NET applications.
 
