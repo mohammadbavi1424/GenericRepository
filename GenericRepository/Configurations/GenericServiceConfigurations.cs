@@ -1,5 +1,6 @@
 ﻿using GenericRepositories.Repositories.GenericCleanArchitecture;
 using GenericRepository.Context;
+using GenericRepository.Context.AutoMigration;
 using GenericRepository.Contracts.Generic;
 using GenericRepository.Contracts.GenericCleanArchitecture;
 using GenericRepository.Repositories.Generic;
@@ -98,6 +99,7 @@ namespace GenericRepository.Configurations
 
         private static void AddLifeCycles(this IServiceCollection services)
         {
+
             #region Generic scopes lifetime
             services.AddScoped(typeof(IRepositorySyncronize<>), typeof(RepositorySyncronize<>));
             services.AddScoped(typeof(IRepositoryPublicAsyncEFCore<>), typeof(RepositoryPublicAsyncEFCore<>));
@@ -113,6 +115,10 @@ namespace GenericRepository.Configurations
             services.AddScoped(typeof(IRepositoryDelete<>), typeof(RepositoryDelete<>));
             #endregion
 
+            services.AddScoped<GenericAutoMigrationCommandDb>();
+            services.AddScoped<GenericAutoMigrationQueryDb>();
+
+            
         }
 
 
