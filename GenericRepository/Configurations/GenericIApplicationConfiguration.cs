@@ -11,11 +11,17 @@ namespace GenericRepository.Configurations
         public static void GenericAppConfiguration(this IApplicationBuilder app)
         {
 
+            //using (var ServiceCollection = app.())
+            
+
             using (var scop = app.ApplicationServices.CreateScope())
             {
                 //if (setting != null && 
                 //    setting.QueryConnectionString != setting.CommandConnectionString)
                 //{
+
+
+
                     scop.CreateCommandDbContextInStart();
                     scop.CreateQyeryDbContextInStart();
                 //}
