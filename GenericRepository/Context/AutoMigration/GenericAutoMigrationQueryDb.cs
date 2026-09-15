@@ -53,11 +53,11 @@ namespace GenericRepository.Context.AutoMigration
         public async Task SyncAsync(
             CancellationToken cancellationToken = default)
         {
-            // 1. ساخت دیتابیس در صورتی که وجود نداشته باشد
+            // Create Db If Not Exist
             await _dbContext.Database.EnsureCreatedAsync(
                 cancellationToken);
 
-            // 2. اگر دیتابیس ایجاد شد، snapshot اولیه ساخته شود
+            // Create the first Snapshot 
             var currentSnapshot = CreateSnapshot();
 
             var previousSnapshot =
@@ -72,7 +72,7 @@ namespace GenericRepository.Context.AutoMigration
                 return;
             }
 
-            // 3. ساخت عملیات تغییر Schema
+            // Operation Change Schema
             var operations = BuildOperations(
                 previousSnapshot,
                 currentSnapshot);
@@ -80,14 +80,14 @@ namespace GenericRepository.Context.AutoMigration
             if (operations.Count == 0)
                 return;
 
-            // 4. اجرای تغییرات داخل Transaction
+            // Operation Local Transaction
             await using var transaction =
                 await _dbContext.Database.BeginTransactionAsync(
                     cancellationToken);
 
             try
             {
-                // جلوگیری از اجرای همزمان Migration
+                // Concurrency Handel for Migration
                 await AcquireApplicationLockAsync(
                     cancellationToken);
 
@@ -105,7 +105,7 @@ namespace GenericRepository.Context.AutoMigration
                         cancellationToken);
                 }
 
-                // Snapshot فقط بعد از موفقیت کامل عملیات
+                // Snapshot created when opertaion is success
                 await SaveSnapshotAsync(
                     currentSnapshot,
                     cancellationToken);
@@ -122,9 +122,6 @@ namespace GenericRepository.Context.AutoMigration
             }
         }
 
-        // =========================================================
-        // Build Operations
-        // =========================================================
 
         private List<MigrationOperation> BuildOperations(
             SchemaSnapshot oldSnapshot,
@@ -155,9 +152,6 @@ namespace GenericRepository.Context.AutoMigration
             return operations;
         }
 
-        // =========================================================
-        // Tables
-        // =========================================================
 
         private void AddNewTables(
             SchemaSnapshot oldSnapshot,
@@ -207,9 +201,6 @@ namespace GenericRepository.Context.AutoMigration
             }
         }
 
-        // =========================================================
-        // Columns
-        // =========================================================
 
         private void AddNewColumns(
             SchemaSnapshot oldSnapshot,
@@ -223,7 +214,7 @@ namespace GenericRepository.Context.AutoMigration
                         x.Schema == table.Schema &&
                         x.Name == table.Name);
 
-                // جدول جدید قبلاً در CreateTable ساخته شده
+                // new Table was created in CreateTable  
                 if (oldTable == null)
                     continue;
 
@@ -280,7 +271,7 @@ namespace GenericRepository.Context.AutoMigration
                 IsRowVersion = column.IsRowVersion
             };
 
-            // حفظ Annotation های مهم EF / SQL Server
+            // important Annotation in EF/ Sql
             foreach (var annotation in column.Annotations)
             {
                 operation[annotation.Key] =
@@ -290,9 +281,6 @@ namespace GenericRepository.Context.AutoMigration
             return operation;
         }
 
-        // =========================================================
-        // Indexes
-        // =========================================================
 
         private void AddNewIndexes(
             SchemaSnapshot oldSnapshot,
@@ -308,7 +296,6 @@ namespace GenericRepository.Context.AutoMigration
 
                 if (oldTable == null)
                 {
-                    // جدول جدید است؛ Indexها جداگانه ساخته می‌شوند
                     oldTable = new TableSnapshot
                     {
                         Name = table.Name,
@@ -344,9 +331,6 @@ namespace GenericRepository.Context.AutoMigration
             }
         }
 
-        // =========================================================
-        // Foreign Keys
-        // =========================================================
 
         private void AddNewForeignKeys(
             SchemaSnapshot oldSnapshot,
@@ -420,9 +404,7 @@ namespace GenericRepository.Context.AutoMigration
             };
         }
 
-        // =========================================================
-        // Snapshot
-        // =========================================================
+
 
         private SchemaSnapshot CreateSnapshot()
         {
@@ -448,9 +430,7 @@ namespace GenericRepository.Context.AutoMigration
                     Schema = schema
                 };
 
-                // -------------------------
-                // Columns
-                // -------------------------
+
 
                 var tableIdentifier =
                     StoreObjectIdentifier.Table(
@@ -531,9 +511,6 @@ namespace GenericRepository.Context.AutoMigration
                     table.Columns.Add(column);
                 }
 
-                // -------------------------
-                // Primary Key
-                // -------------------------
 
                 var primaryKey =
                     entity.FindPrimaryKey();
@@ -559,9 +536,7 @@ namespace GenericRepository.Context.AutoMigration
                         };
                 }
 
-                // -------------------------
-                // Indexes
-                // -------------------------
+
 
                 foreach (var index in entity.GetIndexes())
                 {
@@ -600,9 +575,7 @@ namespace GenericRepository.Context.AutoMigration
                         });
                 }
 
-                // -------------------------
-                // Foreign Keys
-                // -------------------------
+
 
                 foreach (var foreignKey
                     in entity.GetForeignKeys())
@@ -678,9 +651,7 @@ namespace GenericRepository.Context.AutoMigration
             return snapshot;
         }
 
-        // =========================================================
-        // Snapshot Database
-        // =========================================================
+
 
         private async Task<SchemaSnapshot?>
             LoadSnapshotAsync(
@@ -784,9 +755,7 @@ namespace GenericRepository.Context.AutoMigration
                 cancellationToken);
         }
 
-        // =========================================================
-        // Application Lock
-        // =========================================================
+
 
         private async Task AcquireApplicationLockAsync(
             CancellationToken cancellationToken)
@@ -809,9 +778,6 @@ namespace GenericRepository.Context.AutoMigration
                 cancellationToken);
         }
 
-        // =========================================================
-        // CLR Type
-        // =========================================================
 
         private static Type GetClrType(
             string clrType)
