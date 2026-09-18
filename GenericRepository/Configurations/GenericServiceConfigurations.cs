@@ -1,7 +1,5 @@
-using GenericRepositories.Repositories.GenericCleanArchitecture;
 using GenericRepository.Context;
 using GenericRepository.Context.AutoMigration;
-using GenericRepository.Context;
 using GenericRepository.Contracts.Generic;
 using GenericRepository.Contracts.GenericCleanArchitecture;
 using GenericRepository.Repositories.Generic;
@@ -34,17 +32,7 @@ namespace GenericRepository.Configurations
             services.AddLifeCycles();
         }
 
-        public static void AddGenericConfigurations(this IServiceCollection services,
-            string CommandDbConnectionString, string QueryDbConnectionString, AssembliesSetting assemblies)
-        {
-            DbConnectionSetting setting = new()
-            {
-                CommandConnectionString = CommandDbConnectionString,
-                QueryConnectionString = QueryDbConnectionString,
-            };
-            services.AddGenericDbContex(setting, assemblies);
-            services.AddLifeCycles();
-        }
+        
 
         public static void AddGenericConfigurations(this IServiceCollection services,
             string ConnectionString, AssembliesSetting assemblies)
