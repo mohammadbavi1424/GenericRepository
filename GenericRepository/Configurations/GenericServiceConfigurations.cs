@@ -21,6 +21,18 @@ namespace GenericRepository.Configurations
         }
 
         public static void AddGenericConfigurations(this IServiceCollection services,
+            string CommandDbConnectionString, string QueryDbConnectionString, AssembliesSetting assemblies)
+        {
+            DbConnectionSetting setting = new()
+            {
+                CommandConnectionString = CommandDbConnectionString,
+                QueryConnectionString = QueryDbConnectionString,
+            };
+            services.AddGenericDbContex(setting, assemblies);
+            services.AddLifeCycles();
+        }
+
+        public static void AddGenericConfigurations(this IServiceCollection services,
             string ConnectionString, AssembliesSetting assemblies)
         {
             DbConnectionSetting setting = new()
