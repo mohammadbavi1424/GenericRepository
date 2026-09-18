@@ -4,7 +4,7 @@ using GenericRepository.Contracts.GenericCleanArchitecture;
 using GenericRepository.Utilities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GenericRepositories.Repositories.GenericCleanArchitecture
+namespace GenericRepository.Repositories.GenericCleanArchitecture
 {
     public class RepositoryAdd<TEntity> : 
         IRepositoryAdd<TEntity>
