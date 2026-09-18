@@ -10,9 +10,6 @@ namespace GenericRepository.Configurations
     public static class GenericIApplicationConfiguration
     {
 
-
-        public static async Task GenericAppConfiguration(this IApplicationBuilder app)
-          
         public static void GenericAppConfiguration(this IApplicationBuilder app)
 
         {
