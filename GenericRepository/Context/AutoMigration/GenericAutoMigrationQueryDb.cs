@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace GenericRepository.Context.AutoMigration
 {
@@ -12,18 +14,23 @@ namespace GenericRepository.Context.AutoMigration
     {
         private const string SnapshotSchema = "dbo";
         private const string SnapshotTable = "__GenericRepositorySchemaSnapshot";
+        private readonly string DbName;
+
 
         private readonly GenericQueryDbContext _dbContext;
         private readonly IMigrationsSqlGenerator _sqlGenerator;
 
         public GenericAutoMigrationQueryDb(
-    GenericQueryDbContext dbContext)
+             GenericQueryDbContext dbContext)
         {
             _dbContext = dbContext;
 
             _sqlGenerator = dbContext
                 .GetInfrastructure()
                 .GetRequiredService<IMigrationsSqlGenerator>();
+
+            DbName = _dbContext.Database.GetDbConnection().Database;
+
         }
 
         public async Task SynchronizeAsync(
@@ -53,11 +60,9 @@ namespace GenericRepository.Context.AutoMigration
         public async Task SyncAsync(
             CancellationToken cancellationToken = default)
         {
-            // Create Db If Not Exist
             await _dbContext.Database.EnsureCreatedAsync(
                 cancellationToken);
 
-            // Create the first Snapshot 
             var currentSnapshot = CreateSnapshot();
 
             var previousSnapshot =
@@ -72,7 +77,6 @@ namespace GenericRepository.Context.AutoMigration
                 return;
             }
 
-            // Operation Change Schema
             var operations = BuildOperations(
                 previousSnapshot,
                 currentSnapshot);
@@ -80,14 +84,12 @@ namespace GenericRepository.Context.AutoMigration
             if (operations.Count == 0)
                 return;
 
-            // Operation Local Transaction
             await using var transaction =
                 await _dbContext.Database.BeginTransactionAsync(
                     cancellationToken);
 
             try
             {
-                // Concurrency Handel for Migration
                 await AcquireApplicationLockAsync(
                     cancellationToken);
 
@@ -105,7 +107,6 @@ namespace GenericRepository.Context.AutoMigration
                         cancellationToken);
                 }
 
-                // Snapshot created when opertaion is success
                 await SaveSnapshotAsync(
                     currentSnapshot,
                     cancellationToken);
@@ -121,6 +122,7 @@ namespace GenericRepository.Context.AutoMigration
                 throw;
             }
         }
+
 
 
         private List<MigrationOperation> BuildOperations(
@@ -151,6 +153,7 @@ namespace GenericRepository.Context.AutoMigration
 
             return operations;
         }
+
 
 
         private void AddNewTables(
@@ -214,7 +217,6 @@ namespace GenericRepository.Context.AutoMigration
                         x.Schema == table.Schema &&
                         x.Name == table.Name);
 
-                // new Table was created in CreateTable  
                 if (oldTable == null)
                     continue;
 
@@ -271,7 +273,6 @@ namespace GenericRepository.Context.AutoMigration
                 IsRowVersion = column.IsRowVersion
             };
 
-            // important Annotation in EF/ Sql
             foreach (var annotation in column.Annotations)
             {
                 operation[annotation.Key] =
@@ -512,6 +513,7 @@ namespace GenericRepository.Context.AutoMigration
                 }
 
 
+
                 var primaryKey =
                     entity.FindPrimaryKey();
 
@@ -652,7 +654,6 @@ namespace GenericRepository.Context.AutoMigration
         }
 
 
-
         private async Task<SchemaSnapshot?>
             LoadSnapshotAsync(
                 CancellationToken cancellationToken)
@@ -660,7 +661,7 @@ namespace GenericRepository.Context.AutoMigration
             var exists = await _dbContext.Database
                 .SqlQueryRaw<int>(
                     $"""
-                    SELECT COUNT(*)
+                    SELECT COUNT(*) As Value
                     FROM INFORMATION_SCHEMA.TABLES
                     WHERE TABLE_SCHEMA = '{SnapshotSchema}'
                       AND TABLE_NAME = '{SnapshotTable}'
@@ -673,7 +674,7 @@ namespace GenericRepository.Context.AutoMigration
             var json = await _dbContext.Database
                 .SqlQueryRaw<string>(
                     $"""
-                    SELECT SnapshotJson
+                    SELECT SnapshotJson As Value
                     FROM [{SnapshotSchema}].[{SnapshotTable}]
                     WHERE Id = 1
                     """)
@@ -686,74 +687,297 @@ namespace GenericRepository.Context.AutoMigration
                 json);
         }
 
+        //        private async Task SaveSnapshotAsync(
+        //            SchemaSnapshot snapshot,
+        //            CancellationToken cancellationToken = default)
+        //        {
+
+
+        //            await _dbContext.Database.ExecuteSqlRawAsync(
+        //                $"""
+        //                IF OBJECT_ID(
+        //                    '[{SnapshotSchema}].[{SnapshotTable}]',
+        //                    'U'
+        //                ) IS NULL
+        //                BEGIN
+        //                    CREATE TABLE
+        //                    [{SnapshotSchema}].[{SnapshotTable}]
+        //                    (
+        //                        Id INT NOT NULL PRIMARY KEY,
+        //                        TableName NVARCHAR(1000) NOT NULL,
+        //                        SchemaName NVARCHAR(1000) NOT NULL,
+        //                        jsonColum NVARCHAR(MAX),
+        //                        jsonPrimeryKey NVARCHAR(MAX),
+        //                        jsonIndexes NVARCHAR(MAX),
+        //                        jsonForeignKeys NVARCHAR(MAX),
+        //                        UpdatedAt DATETIME2 NOT NULL
+        //                    );
+        //                END
+        //                """,
+        //                cancellationToken);
+
+
+
+
+        //            foreach (var item in snapshot.Tables) 
+        //            {
+        //                var jsonColum =
+        //                JsonSerializer.Serialize(
+        //                    item.Columns,
+        //                    new JsonSerializerOptions
+        //                    {
+        //                        WriteIndented = false
+        //                    });
+
+        //                var jsonPrimeryKey =
+        //               JsonSerializer.Serialize(
+        //                   item.PrimaryKey,
+        //                   new JsonSerializerOptions
+        //                   {
+        //                       WriteIndented = false
+        //                   });
+
+
+        //                var jsonIndexes =
+        //               JsonSerializer.Serialize(
+        //                   item.Indexes,
+        //                   new JsonSerializerOptions
+        //                   {
+        //                       WriteIndented = false
+        //                   });
+
+        //                var jsonForeignKeys =
+        //               JsonSerializer.Serialize(
+        //                   item.ForeignKeys,
+        //                   new JsonSerializerOptions
+        //                   {
+        //                       WriteIndented = false
+        //                   });
+
+        //                var escapedJsonColum =
+        //                jsonColum.Replace("'", "''");
+
+        //                var escapedJsonPrimeryKey =
+        //                jsonPrimeryKey.Replace("'", "''");
+
+        //                var escapedJsonIndexes=
+        //                jsonIndexes.Replace("'", "''");
+
+        //                var escapedJsonForeinKey =
+        //                jsonForeignKeys.Replace("'", "''");
+
+        //                var qualifiedTable =
+        //$"[{SnapshotSchema.Replace("]", "]]")}].[{SnapshotTable.Replace("]", "]]")}]";
+
+
+        //                await _dbContext.Database.ExecuteSqlRawAsync(
+        //        $"""
+        //    MERGE {qualifiedTable} AS Target
+        //    USING
+        //    (
+        //        SELECT
+        //            1 AS Id,
+        //            @TableName AS TableName,
+        //            @SchemaName AS SchemaName,
+        //            @jsonColum AS jsonColum,
+        //            @jsonPrimeryKey AS jsonPrimeryKey,
+        //            @jsonIndexes AS jsonIndexes,
+        //            @jsonForeignKeys AS jsonForeignKeys,
+        //            SYSUTCDATETIME() AS UpdatedAt
+        //    ) AS Source
+        //    ON Target.Id = Source.Id
+
+        //    WHEN MATCHED THEN
+        //        UPDATE SET
+        //            TableName = Source.TableName,    
+        //            SchemaName = Source.SchemaName,
+        //            jsonColum = Source.jsonColum,
+        //            jsonPrimeryKey = Source.jsonPrimeryKey,
+        //            jsonIndexes = Source.jsonIndexes,
+        //            jsonForeignKeys = Source.jsonForeignKeys,
+        //            UpdatedAt = Source.UpdatedAt
+
+        //    WHEN NOT MATCHED THEN
+        //        INSERT
+        //        (
+        //            Id,
+        //     TableName,
+        //     SchemaName,
+        //     jsonColum,
+        //     jsonPrimeryKey,
+        //     jsonIndexes,
+        //     jsonForeignKeys,
+        //            UpdatedAt
+        //        )
+        //        VALUES
+        //        (
+        //            Source.Id,
+        //            Source.TableName,    
+        //            Source.SchemaName,
+        //            Source.jsonColum,
+        //            Source.jsonPrimeryKey,
+        //            Source.jsonIndexes,
+        //            Source.jsonForeignKeys,
+        //            Source.UpdatedAt
+        //        );
+        //    """,
+        //        new object[]
+        //        {
+        //        new SqlParameter("@TableName", item.Name),
+        //        new SqlParameter("@SchemaName", item.Schema),
+        //        new SqlParameter("@jsonColum", jsonColum),
+        //        new SqlParameter("@jsonPrimeryKey", jsonPrimeryKey),
+        //        new SqlParameter("@jsonIndexes", jsonIndexes),
+        //        new SqlParameter("@jsonForeignKeys", jsonForeignKeys),
+        //        },
+        //        cancellationToken);
+
+
+
+
+        //            }
+
+
+
+
+        //        }
+
+
         private async Task SaveSnapshotAsync(
-            SchemaSnapshot snapshot,
-            CancellationToken cancellationToken)
+    SchemaSnapshot snapshot,
+    CancellationToken cancellationToken = default)
         {
-            var json =
-                JsonSerializer.Serialize(
-                    snapshot,
-                    new JsonSerializerOptions
-                    {
-                        WriteIndented = false
-                    });
+            var qualifiedTable =
+                $"[{SnapshotSchema.Replace("]", "]]")}].[{SnapshotTable.Replace("]", "]]")}]";
 
+            // Create snapshot table if it does not exist
             await _dbContext.Database.ExecuteSqlRawAsync(
                 $"""
-                IF OBJECT_ID(
-                    '[{SnapshotSchema}].[{SnapshotTable}]',
-                    'U'
-                ) IS NULL
-                BEGIN
-                    CREATE TABLE
-                    [{SnapshotSchema}].[{SnapshotTable}]
-                    (
-                        Id INT NOT NULL PRIMARY KEY,
-                        SnapshotJson NVARCHAR(MAX) NOT NULL,
-                        UpdatedAt DATETIME2 NOT NULL
-                    );
-                END
-                """,
+        IF OBJECT_ID(N'{SnapshotSchema}.{SnapshotTable}', 'U') IS NULL
+        BEGIN
+            CREATE TABLE {qualifiedTable}
+            (
+                Id INT IDENTITY(1,1) NOT NULL
+                    CONSTRAINT PK_{SnapshotTable} PRIMARY KEY,
+
+                TableName NVARCHAR(128) NOT NULL,
+                SchemaName NVARCHAR(128) NOT NULL,
+
+                JsonColumns NVARCHAR(MAX) NULL,
+                JsonPrimaryKey NVARCHAR(MAX) NULL,
+                JsonIndexes NVARCHAR(MAX) NULL,
+                JsonForeignKeys NVARCHAR(MAX) NULL,
+
+                UpdatedAt DATETIME2 NOT NULL
+            );
+
+            CREATE UNIQUE INDEX UX_{SnapshotTable}_Schema_Table
+            ON {qualifiedTable}
+            (
+                SchemaName,
+                TableName
+            );
+        END
+        """,
                 cancellationToken);
 
-            var escapedJson =
-                json.Replace("'", "''");
 
-            await _dbContext.Database.ExecuteSqlRawAsync(
-                $"""
-                MERGE [{SnapshotSchema}].[{SnapshotTable}]
-                AS Target
-                USING
+
+            foreach (var item in snapshot.Tables)
+            {
+                var jsonColumns =
+                    JsonSerializer.Serialize(
+                        item.Columns,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = false
+                        });
+
+                var jsonPrimaryKey =
+                    JsonSerializer.Serialize(
+                        item.PrimaryKey,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = false
+                        });
+
+                var jsonIndexes =
+                    JsonSerializer.Serialize(
+                        item.Indexes,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = false
+                        });
+
+                var jsonForeignKeys =
+                    JsonSerializer.Serialize(
+                        item.ForeignKeys,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = false
+                        });
+
+                await _dbContext.Database.ExecuteSqlRawAsync(
+                    $"""
+            MERGE {qualifiedTable} AS Target
+            USING
+            (
+                SELECT
+                    @TableName AS TableName,
+                    @SchemaName AS SchemaName,
+                    @JsonColumns AS JsonColumns,
+                    @JsonPrimaryKey AS JsonPrimaryKey,
+                    @JsonIndexes AS JsonIndexes,
+                    @JsonForeignKeys AS JsonForeignKeys,
+                    SYSUTCDATETIME() AS UpdatedAt
+            ) AS Source
+
+            ON Target.SchemaName = Source.SchemaName
+            AND Target.TableName = Source.TableName
+
+            WHEN MATCHED THEN
+                UPDATE SET
+                    JsonColumns = Source.JsonColumns,
+                    JsonPrimaryKey = Source.JsonPrimaryKey,
+                    JsonIndexes = Source.JsonIndexes,
+                    JsonForeignKeys = Source.JsonForeignKeys,
+                    UpdatedAt = Source.UpdatedAt
+
+            WHEN NOT MATCHED THEN
+                INSERT
                 (
-                    SELECT
-                        1 AS Id,
-                        N'{escapedJson}' AS SnapshotJson,
-                        SYSUTCDATETIME() AS UpdatedAt
+                    TableName,
+                    SchemaName,
+                    JsonColumns,
+                    JsonPrimaryKey,
+                    JsonIndexes,
+                    JsonForeignKeys,
+                    UpdatedAt
                 )
-                AS Source
-                ON Target.Id = Source.Id
-
-                WHEN MATCHED THEN
-                    UPDATE SET
-                        SnapshotJson = Source.SnapshotJson,
-                        UpdatedAt = Source.UpdatedAt
-
-                WHEN NOT MATCHED THEN
-                    INSERT
-                    (
-                        Id,
-                        SnapshotJson,
-                        UpdatedAt
-                    )
-                    VALUES
-                    (
-                        Source.Id,
-                        Source.SnapshotJson,
-                        Source.UpdatedAt
-                    );
-                """,
-                cancellationToken);
+                VALUES
+                (
+                    Source.TableName,
+                    Source.SchemaName,
+                    Source.JsonColumns,
+                    Source.JsonPrimaryKey,
+                    Source.JsonIndexes,
+                    Source.JsonForeignKeys,
+                    Source.UpdatedAt
+                );
+            """,
+                    new object[]
+                    {
+                new SqlParameter("@TableName", item.Name),
+                new SqlParameter("@SchemaName", item.Schema),
+                new SqlParameter("@JsonColumns", jsonColumns),
+                new SqlParameter("@JsonPrimaryKey", jsonPrimaryKey),
+                new SqlParameter("@JsonIndexes", jsonIndexes),
+                new SqlParameter("@JsonForeignKeys", jsonForeignKeys)
+                    },
+                    cancellationToken);
+            }
         }
+
 
 
 
@@ -777,7 +1001,6 @@ namespace GenericRepository.Context.AutoMigration
                 """,
                 cancellationToken);
         }
-
 
         private static Type GetClrType(
             string clrType)
