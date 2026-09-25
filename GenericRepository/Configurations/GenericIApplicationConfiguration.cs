@@ -11,73 +11,16 @@ namespace GenericRepository.Configurations
     {
 
         public static void GenericAppConfiguration(this IApplicationBuilder app)
-
         {
-
-            //using (var ServiceCollection = app.())
-            
 
             using (var scop = app.ApplicationServices.CreateScope())
             {
-                //if (setting != null && 
-                //    setting.QueryConnectionString != setting.CommandConnectionString)
-                //{
-                //scop.CreateCommandDbContextInStart();
-                //scop.CreateQyeryDbContextInStart();
-                //}
-                //else
-                //{
-                //    scop.CreateCommandDbContextInStart();
-                //}
-
-                scop.CreateCommandDbContextInStart().Wait();
-                scop.CreateQueryDbContextInStart().Wait();
-
+                scop.CreateOrUpdateCommandDbContextInStart().Wait();
+                scop.CreateOrUpdateQueryDbContextInStart().Wait();
             }
         }
 
-
-        private static void CreateCommandDbContextInStart1(this IServiceScope scope)
-        {
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<GenericCommandDbContext>();
-
-            dbContext.Database.EnsureCreated();
-
-            var created = dbContext.Database.EnsureCreated();
-
-            //Console.WriteLine($"EnsureCreated: {created}");
-
-            //Console.WriteLine(
-            //    $"CanConnect: {dbContext.Database.CanConnect()}");
-
-            //Console.WriteLine(
-            //    $"EntityCount: {dbContext.Model.GetEntityTypes().Count()}");
-
-            var tables = dbContext.Model
-    .GetEntityTypes()
-    .Select(x => x.GetTableName())
-    .Where(x => x != null)
-    .ToList();
-
-            //foreach (var table in tables)
-            //{
-            //    Console.WriteLine($"TABLE: {table}");
-            //}
-
-
-        }
-
-        private static void CreateQyeryDbContextInStart1(this IServiceScope scope)
-        {
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<GenericQueryDbContext>();
-            dbContext.Database.EnsureCreated();
-            //dbContext.Database.Migrate();
-        }
-
-
-        private static async Task CreateCommandDbContextInStart(
+        private static async Task CreateOrUpdateCommandDbContextInStart(
     this IServiceScope scope, CancellationToken cancellationToken = default)
         {
             var migration = scope.ServiceProvider
@@ -88,7 +31,7 @@ namespace GenericRepository.Configurations
 
 
 
-        private static async Task CreateQueryDbContextInStart(
+        private static async Task CreateOrUpdateQueryDbContextInStart(
     this IServiceScope scope, CancellationToken cancellationToken = default)
         {
             var migration = scope.ServiceProvider
