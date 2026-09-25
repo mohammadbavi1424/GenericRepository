@@ -1,14 +1,20 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
+using GenericRepository.Models.AutoMigration;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Design;
+using GenericRepository.Context;
 
-
-namespace GenericRepository.Context.AutoMigration
+namespace GenericRepository.AutoMigration
 {
 
 
@@ -62,8 +68,15 @@ namespace GenericRepository.Context.AutoMigration
         public async Task SyncAsync(
             CancellationToken cancellationToken = default)
         {
-            await _dbContext.Database.EnsureCreatedAsync(
-                cancellationToken);
+            //await _dbContext.Database.EnsureCreatedAsync(
+            //    cancellationToken);
+
+            if (!await _dbContext.Database.CanConnectAsync(cancellationToken))
+            {
+                await _dbContext.Database.EnsureCreatedAsync(
+                    cancellationToken);
+            }
+
 
             var currentSnapshot = CreateSnapshot();
 
@@ -107,6 +120,10 @@ namespace GenericRepository.Context.AutoMigration
                     await _dbContext.Database.ExecuteSqlRawAsync(
                         command.CommandText,
                         cancellationToken);
+
+                    //ExecuteSqlRawAsync
+
+
                 }
 
                 await SaveSnapshotAsync(
@@ -116,8 +133,9 @@ namespace GenericRepository.Context.AutoMigration
                 await transaction.CommitAsync(
                     cancellationToken);
             }
-            catch
+            catch (Exception e)
             {
+                var ee = e.Message;
                 await transaction.RollbackAsync(
                     cancellationToken);
 
@@ -133,32 +151,20 @@ namespace GenericRepository.Context.AutoMigration
         {
             var operations = new List<MigrationOperation>();
 
-            AddNewTables(
-                oldSnapshot,
-                newSnapshot,
-                operations);
+            operations.AddRange(AddNewTables(oldSnapshot, newSnapshot, operations));
 
-            AddNewColumns(
-                oldSnapshot,
-                newSnapshot,
-                operations);
+            operations.AddRange(AddNewColumns(oldSnapshot, newSnapshot, operations));
 
-            AddNewIndexes(
-                oldSnapshot,
-                newSnapshot,
-                operations);
+            operations.AddRange(AddNewIndexes(oldSnapshot, newSnapshot, operations));
 
-            AddNewForeignKeys(
-                oldSnapshot,
-                newSnapshot,
-                operations);
+            operations.AddRange(AddNewForeignKeys(oldSnapshot, newSnapshot, operations));
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
 
-        private void AddNewTables(
+        private List<MigrationOperation> AddNewTables(
             SchemaSnapshot oldSnapshot,
             SchemaSnapshot newSnapshot,
             List<MigrationOperation> operations)
@@ -204,10 +210,13 @@ namespace GenericRepository.Context.AutoMigration
 
                 operations.Add(createTable);
             }
+
+            return operations;
+
         }
 
 
-        private void AddNewColumns(
+        private List<MigrationOperation> AddNewColumns(
             SchemaSnapshot oldSnapshot,
             SchemaSnapshot newSnapshot,
             List<MigrationOperation> operations)
@@ -236,6 +245,8 @@ namespace GenericRepository.Context.AutoMigration
                             column));
                 }
             }
+
+            return operations;
         }
 
         private AddColumnOperation CreateColumnOperation(
@@ -285,7 +296,7 @@ namespace GenericRepository.Context.AutoMigration
         }
 
 
-        private void AddNewIndexes(
+        private List<MigrationOperation> AddNewIndexes(
             SchemaSnapshot oldSnapshot,
             SchemaSnapshot newSnapshot,
             List<MigrationOperation> operations)
@@ -323,7 +334,7 @@ namespace GenericRepository.Context.AutoMigration
 
                             Columns = index.Columns.ToArray(),
 
-                            IsUnique = index.IsUnique,
+                            IsUnique = index.IsUnique.Value,
 
                             IsDescending =
                                 index.IsDescending.ToArray(),
@@ -332,14 +343,18 @@ namespace GenericRepository.Context.AutoMigration
                         });
                 }
             }
+
+
+            return operations;
         }
 
 
-        private void AddNewForeignKeys(
+        private List<MigrationOperation> AddNewForeignKeys(
             SchemaSnapshot oldSnapshot,
             SchemaSnapshot newSnapshot,
             List<MigrationOperation> operations)
         {
+
             foreach (var table in newSnapshot.Tables)
             {
                 var oldTable = oldSnapshot.Tables
@@ -383,6 +398,9 @@ namespace GenericRepository.Context.AutoMigration
                         });
                 }
             }
+
+
+            return operations;
         }
 
         private static ReferentialAction ConvertDeleteBehavior(
@@ -409,23 +427,45 @@ namespace GenericRepository.Context.AutoMigration
 
 
 
+
+        //***************************************************************************************************************
+        //***************************************************************************************************************
+        //***************************************************************************************************************
+
+
         private SchemaSnapshot CreateSnapshot()
         {
-            var model = _dbContext.Model;
+
+            var model =
+                _dbContext
+                    .GetService<IDesignTimeModel>()
+                    .Model;
 
             var snapshot = new SchemaSnapshot();
 
             foreach (var entity in model.GetEntityTypes())
             {
+                // ============================================================
+                // 1. Table Mapping
+                // ============================================================
+
+                var tableMapping =
+                    entity
+                        .GetTableMappings()
+                        .FirstOrDefault();
+
+                if (tableMapping == null)
+                    continue;
+
                 var tableName =
-                    entity.GetTableName();
+                    tableMapping.Table.Name;
 
                 if (string.IsNullOrWhiteSpace(tableName))
                     continue;
 
                 var schema =
-                    entity.GetSchema()
-                    ?? SnapshotSchema;
+                    tableMapping.Table.Schema ?? "dbo";
+
 
                 var table = new TableSnapshot
                 {
@@ -434,20 +474,78 @@ namespace GenericRepository.Context.AutoMigration
                 };
 
 
+                // ============================================================
+                // Local helper:
+                // Property -> Column Name
+                // ============================================================
 
-                var tableIdentifier =
-                    StoreObjectIdentifier.Table(
-                        tableName,
-                        schema);
+                string? GetColumnName(
+                    IEntityType entityType,
+                    IProperty property,
+                    StoreObjectIdentifier table)
+                {
+                    var mapping =
+                        entityType
+                            .GetTableMappings()
+                            .FirstOrDefault(x =>
+                                x.Table.Name == table.Name &&
+                                x.Table.Schema == table.Schema);
+
+                    if (mapping == null)
+                        return null;
+
+                    var columnMapping =
+                        mapping.ColumnMappings
+                            .FirstOrDefault(x =>
+                                x.Property == property);
+
+                    if (columnMapping != null)
+                        return columnMapping.Column.Name;
+
+
+                    columnMapping =
+                        mapping.ColumnMappings
+                            .FirstOrDefault(x =>
+                                x.Property.Name == property.Name);
+
+                    return columnMapping?.Column.Name;
+                }
+
+
+                // ============================================================
+                // 2. Columns
+                // ============================================================
 
                 foreach (var property in entity.GetProperties())
                 {
+                    var columnMapping =
+                        tableMapping.ColumnMappings
+                            .FirstOrDefault(x =>
+                                x.Property == property);
+
+
+                    if (columnMapping == null)
+                    {
+                        columnMapping =
+                            tableMapping.ColumnMappings
+                                .FirstOrDefault(x =>
+                                    x.Property.Name == property.Name);
+                    }
+
+                    if (columnMapping == null)
+                        continue;
+
+
                     var columnName =
-                        property.GetColumnName(
-                            tableIdentifier);
+                        columnMapping.Column.Name;
 
                     if (string.IsNullOrWhiteSpace(columnName))
                         continue;
+
+
+                    // --------------------------------------------------------
+                    // Annotations
+                    // --------------------------------------------------------
 
                     var annotations =
                         new Dictionary<string, object?>();
@@ -458,58 +556,105 @@ namespace GenericRepository.Context.AutoMigration
                             annotation.Value;
                     }
 
-                    var column = new ColumnSnapshot
-                    {
-                        Name = columnName,
 
-                        ClrType =
-                            property.ClrType.AssemblyQualifiedName
-                            ?? property.ClrType.FullName
-                            ?? property.ClrType.Name,
+                    // --------------------------------------------------------
+                    // Identity
+                    // --------------------------------------------------------
 
-                        ColumnType =
-                            property.GetColumnType(
-                                tableIdentifier)
-                            ?? property.GetRelationalTypeMapping()
-                                .StoreType,
+                    var isIdentity =
+                        property.GetValueGenerationStrategy()
+                        == SqlServerValueGenerationStrategy.IdentityColumn;
 
-                        IsNullable =
-                            property.IsNullable,
 
-                        MaxLength =
-                            property.GetMaxLength(),
+                    // --------------------------------------------------------
+                    // Computed
+                    // --------------------------------------------------------
 
-                        IsUnicode =
-                            property.IsUnicode(),
+                    var computedColumnSql =
+                        property.GetComputedColumnSql();
 
-                        IsFixedLength =
-                            property.IsFixedLength(),
+                    var isComputed =
+                        !string.IsNullOrWhiteSpace(computedColumnSql);
 
-                        Precision =
-                            property.GetPrecision(),
 
-                        Scale =
-                            property.GetScale(),
+                    // --------------------------------------------------------
+                    // RowVersion
+                    // --------------------------------------------------------
 
-                        DefaultValue =
-                            property.GetDefaultValue(),
+                    var isRowVersion =
+                        property.IsConcurrencyToken &&
+                        property.ValueGenerated ==
+                            ValueGenerated.OnAddOrUpdate;
 
-                        DefaultValueSql =
-                            property.GetDefaultValueSql(),
 
-                        ComputedColumnSql =
-                            property.GetComputedColumnSql(),
+                    // --------------------------------------------------------
+                    // Column
+                    // --------------------------------------------------------
 
-                        IsStored =
-                            property.GetIsStored(),
+                    var column =
+                        new ColumnSnapshot
+                        {
+                            IsIdentity =
+                                isIdentity,
 
-                        IsRowVersion =
-                            property.IsConcurrencyToken &&
-                            property.ValueGenerated ==
-                                ValueGenerated.OnAddOrUpdate,
+                            Name =
+                                columnName,
 
-                        Annotations = annotations
-                    };
+                            ClrType =
+                                property.ClrType.AssemblyQualifiedName
+                                ?? property.ClrType.FullName
+                                ?? property.ClrType.Name,
+
+
+                            ColumnType =
+                                columnMapping.Column.StoreType
+                                ?? property.GetRelationalTypeMapping().StoreType,
+
+                            IsNullable =
+                                property.IsNullable,
+
+                            MaxLength =
+                                property.GetMaxLength(),
+
+                            IsUnicode =
+                                property.IsUnicode(),
+
+                            IsFixedLength =
+                                property.IsFixedLength(),
+
+                            Precision =
+                                property.GetPrecision(),
+
+                            Scale =
+                                property.GetScale(),
+
+                            DefaultValue =
+                                !isIdentity &&
+                                !isComputed &&
+                                !isRowVersion
+                                    ? property.GetDefaultValue()
+                                    : null,
+
+                            DefaultValueSql =
+                                !isIdentity &&
+                                !isComputed &&
+                                !isRowVersion
+                                    ? property.GetDefaultValueSql()
+                                    : null,
+
+                            ComputedColumnSql =
+                                computedColumnSql,
+
+                            IsStored =
+                                property.GetIsStored(),
+
+                            IsRowVersion =
+                                isRowVersion,
+
+                            Annotations =
+                                annotations
+                        };
+
 
                     table.Columns.Add(column);
                 }
@@ -517,97 +662,228 @@ namespace GenericRepository.Context.AutoMigration
 
 
                 var primaryKey =
-                    entity.FindPrimaryKey();
+    entity.FindPrimaryKey();
 
                 if (primaryKey != null)
                 {
+                    var primaryKeyColumns =
+                        primaryKey.Properties
+                            .Select(property =>
+                            {
+                                var mapping =
+                                    tableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property == property);
+
+                                if (mapping != null)
+                                    return mapping.Column.Name;
+
+                                var fallback =
+                                    tableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property.Name == property.Name);
+
+                                return fallback?.Column.Name
+                                    ?? property.Name;
+                            })
+                            .Where(x =>
+                                !string.IsNullOrWhiteSpace(x))
+                            .ToList();
+
                     table.PrimaryKey =
                         new PrimaryKeySnapshot
                         {
                             Name =
-                                primaryKey
-                                    .GetName(),
+                                primaryKey.GetName(),
 
                             Columns =
-                                primaryKey.Properties
-                                    .Select(x =>
-                                        x.GetColumnName(
-                                            tableIdentifier))
-                                    .Where(x =>
-                                        !string.IsNullOrWhiteSpace(x))
-                                    .Cast<string>()
-                                    .ToList()
+                                primaryKeyColumns
                         };
                 }
+
 
 
 
                 foreach (var index in entity.GetIndexes())
                 {
                     var indexName =
-                        index.GetDatabaseName(
-                            tableIdentifier);
+                        index.GetDatabaseName()
+                        ?? index.Name;
 
                     if (string.IsNullOrWhiteSpace(indexName))
                         continue;
 
+
                     var indexColumns =
                         index.Properties
-                            .Select(x =>
-                                x.GetColumnName(
-                                    tableIdentifier))
+                            .Select(property =>
+                            {
+                                var mapping =
+                                    tableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property == property);
+
+                                if (mapping != null)
+                                    return mapping.Column.Name;
+
+
+
+                                mapping =
+                                    tableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property.Name ==
+                                            property.Name);
+
+                                return mapping?.Column.Name
+                                    ?? property.Name;
+                            })
                             .Where(x =>
                                 !string.IsNullOrWhiteSpace(x))
-                            .Cast<string>()
                             .ToList();
 
-                    table.Indexes.Add(
+
+                    
+
+                    var isDescending =
+                        index.IsDescending?
+                            .Select(x => x != null ? x : false)
+                            .ToArray()
+                        ?? Array.Empty<bool>();
+
+
+                    var indexItem =
                         new IndexSnapshot
                         {
-                            Name = indexName,
+                            Name =
+                                indexName,
 
-                            Columns = indexColumns,
+                            Columns =
+                                indexColumns,
 
                             IsUnique =
                                 index.IsUnique,
 
                             IsDescending =
-                                index.IsDescending.ToArray(),
+                                isDescending,
 
                             Filter =
                                 index.GetFilter()
-                        });
+                        };
+
+
+                    table.Indexes.Add(indexItem);
                 }
 
 
+                // ============================================================
+                // 5. Foreign Keys
+                // ============================================================
 
-                foreach (var foreignKey
-                    in entity.GetForeignKeys())
+                foreach (var foreignKey in entity.GetForeignKeys())
                 {
                     var principalEntity =
                         foreignKey.PrincipalEntityType;
 
-                    var principalTableName =
-                        principalEntity.GetTableName();
+                    // --------------------------------------------------------
+                    // Principal Table Mapping
+                    // --------------------------------------------------------
 
-                    if (string.IsNullOrWhiteSpace(
-                        principalTableName))
-                    {
+                    var principalTableMapping =
+                        principalEntity
+                            .GetTableMappings()
+                            .FirstOrDefault();
+
+                    if (principalTableMapping == null)
                         continue;
-                    }
+
+
+                    var principalTableName =
+                        principalTableMapping.Table.Name;
+
+                    if (string.IsNullOrWhiteSpace(principalTableName))
+                        continue;
+
 
                     var principalSchema =
-                        principalEntity.GetSchema()
-                        ?? SnapshotSchema;
+                        principalTableMapping.Table.Schema
+                        ?? "dbo";
+
+
+                    // --------------------------------------------------------
+                    // FK Constraint Name
+                    // --------------------------------------------------------
 
                     var constraintName =
                         foreignKey.GetConstraintName();
 
-                    if (string.IsNullOrWhiteSpace(
-                        constraintName))
-                    {
+                    if (string.IsNullOrWhiteSpace(constraintName))
                         continue;
-                    }
+
+
+                    // --------------------------------------------------------
+                    // Dependent Columns
+                    //
+                    // UserRole.RoleId
+                    // --------------------------------------------------------
+
+                    var foreignKeyColumns =
+                        foreignKey.Properties
+                            .Select(property =>
+                            {
+                                var mapping =
+                                    tableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property == property);
+
+                                if (mapping != null)
+                                    return mapping.Column.Name;
+
+
+                                mapping =
+                                    tableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property.Name ==
+                                            property.Name);
+
+                                return mapping?.Column.Name
+                                    ?? property.Name;
+                            })
+                            .Where(x =>
+                                !string.IsNullOrWhiteSpace(x))
+                            .ToList();
+
+
+
+                    var principalColumns =
+                        foreignKey.PrincipalKey.Properties
+                            .Select(property =>
+                            {
+                                var mapping =
+                                    principalTableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property == property);
+
+                                if (mapping != null)
+                                    return mapping.Column.Name;
+
+
+                                mapping =
+                                    principalTableMapping.ColumnMappings
+                                        .FirstOrDefault(x =>
+                                            x.Property.Name ==
+                                            property.Name);
+
+                                return mapping?.Column.Name
+                                    ?? property.Name;
+                            })
+                            .Where(x =>
+                                !string.IsNullOrWhiteSpace(x))
+                            .ToList();
+
+
+                    // --------------------------------------------------------
+                    // Foreign Key Snapshot
+                    // --------------------------------------------------------
 
                     table.ForeignKeys.Add(
                         new ForeignKeySnapshot
@@ -616,14 +892,7 @@ namespace GenericRepository.Context.AutoMigration
                                 constraintName,
 
                             Columns =
-                                foreignKey.Properties
-                                    .Select(x =>
-                                        x.GetColumnName(
-                                            tableIdentifier))
-                                    .Where(x =>
-                                        !string.IsNullOrWhiteSpace(x))
-                                    .Cast<string>()
-                                    .ToList(),
+                                foreignKeyColumns,
 
                             PrincipalSchema =
                                 principalSchema,
@@ -632,28 +901,25 @@ namespace GenericRepository.Context.AutoMigration
                                 principalTableName,
 
                             PrincipalColumns =
-                                foreignKey.PrincipalKey
-                                    .Properties
-                                    .Select(x =>
-                                        x.GetColumnName(
-                                            StoreObjectIdentifier.Table(
-                                                principalTableName,
-                                                principalSchema)))
-                                    .Where(x =>
-                                        !string.IsNullOrWhiteSpace(x))
-                                    .Cast<string>()
-                                    .ToList(),
+                                principalColumns,
 
                             DeleteBehavior =
                                 foreignKey.DeleteBehavior
                         });
                 }
 
+
+                // ============================================================
+                // 6. Add Table To Snapshot
+                // ============================================================
+
                 snapshot.Tables.Add(table);
             }
 
+
             return snapshot;
         }
+
 
 
         private async Task<SchemaSnapshot?>
@@ -673,23 +939,36 @@ namespace GenericRepository.Context.AutoMigration
             if (exists == 0)
                 return null;
 
-            var json = await _dbContext.Database
-                .SqlQueryRaw<string>(
+            var tableSnapshot = await _dbContext.Database
+                .SqlQueryRaw<TableSnapshotSerialized>(
                     $"""
-                    SELECT SnapshotJson As Value
+                    SELECT *
                     FROM [{SnapshotSchema}].[{SnapshotTable}]
-                    WHERE Id = 1
                     """)
-                .FirstOrDefaultAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
-            if (string.IsNullOrWhiteSpace(json))
+            var result = new SchemaSnapshot()
+            {
+                Tables = tableSnapshot.Select(c => new TableSnapshot()
+                {
+                    Name = c.TableName,
+                    Schema = c.SchemaName,
+                    Columns = JsonSerializer.Deserialize<List<ColumnSnapshot>>(c.JsonColumns),
+                    PrimaryKey = JsonSerializer.Deserialize<PrimaryKeySnapshot>(c.JsonPrimaryKey),
+                    ForeignKeys = JsonSerializer.Deserialize<List<ForeignKeySnapshot>>(c.JsonForeignKeys),
+                    Indexes = JsonSerializer.Deserialize<List<IndexSnapshot>>(c.JsonIndexes)
+
+                }).ToList()
+
+            };
+            if (tableSnapshot == null || tableSnapshot.Count() == 0)
                 return null;
 
-            return JsonSerializer.Deserialize<SchemaSnapshot>(
-                json);
+            return result;
         }
 
-        
+
+
 
         private async Task SaveSnapshotAsync(
     SchemaSnapshot snapshot,
@@ -873,94 +1152,7 @@ namespace GenericRepository.Context.AutoMigration
 
 
 
+    
 
-    public sealed class SchemaSnapshot
-    {
-        public List<TableSnapshot> Tables { get; set; } = new();
-    }
-
-    public sealed class TableSnapshot
-    {
-        public string Name { get; set; } = string.Empty;
-
-        public string Schema { get; set; } = "dbo";
-
-        public List<ColumnSnapshot> Columns { get; set; } = new();
-
-        public PrimaryKeySnapshot? PrimaryKey { get; set; }
-
-        public List<IndexSnapshot> Indexes { get; set; } = new();
-
-        public List<ForeignKeySnapshot> ForeignKeys { get; set; } = new();
-    }
-
-    public sealed class ColumnSnapshot
-    {
-        public string Name { get; set; } = string.Empty;
-
-        public string ClrType { get; set; } = string.Empty;
-
-        public string? ColumnType { get; set; }
-
-        public bool IsNullable { get; set; }
-
-        public int? MaxLength { get; set; }
-
-        public bool? IsUnicode { get; set; }
-
-        public bool? IsFixedLength { get; set; }
-
-        public int? Precision { get; set; }
-
-        public int? Scale { get; set; }
-
-        public object? DefaultValue { get; set; }
-
-        public string? DefaultValueSql { get; set; }
-
-        public string? ComputedColumnSql { get; set; }
-
-        public bool? IsStored { get; set; }
-
-        public bool IsRowVersion { get; set; }
-
-        public Dictionary<string, object?> Annotations { get; set; }
-            = new();
-    }
-
-    public sealed class PrimaryKeySnapshot
-    {
-        public string? Name { get; set; }
-
-        public List<string> Columns { get; set; } = new();
-    }
-
-    public sealed class IndexSnapshot
-    {
-        public string Name { get; set; } = string.Empty;
-
-        public List<string> Columns { get; set; } = new();
-
-        public bool IsUnique { get; set; }
-
-        public bool[] IsDescending { get; set; } = Array.Empty<bool>();
-
-        public string? Filter { get; set; }
-    }
-
-    public sealed class ForeignKeySnapshot
-    {
-        public string Name { get; set; } = string.Empty;
-
-        public List<string> Columns { get; set; } = new();
-
-        public string PrincipalSchema { get; set; } = "dbo";
-
-        public string PrincipalTable { get; set; } = string.Empty;
-
-        public List<string> PrincipalColumns { get; set; } = new();
-
-        public DeleteBehavior DeleteBehavior { get; set; }
-    }
 }
 
