@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace GenericRepository.Repositories.Generic
 {
@@ -49,12 +50,10 @@ namespace GenericRepository.Repositories.Generic
         #region Async Method
 
         public virtual async Task<TEntity> GetByIdDeletedAsync(CancellationToken cancellationToken, params object[] ids)
-        {
-           
-            return await TableNoTrackingDeleted
+        => await TableNoTrackingDeleted
                 .FirstOrDefaultAsync(p =>
                 EF.Property<long>(p, GetIdProperty()) == (long)ids[0], cancellationToken);
-        }
+        
 
         public virtual async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, params object[] ids)
         => await TableNoTracking.FirstOrDefaultAsync(p =>
@@ -216,10 +215,9 @@ namespace GenericRepository.Repositories.Generic
         #region Transaction
         public async Task BeginTransactionAsync(
             CancellationToken cancellationToken)
-        {
-            _transaction = await DbCommandContext.Database
+            => _transaction = await DbCommandContext.Database
                 .BeginTransactionAsync(cancellationToken);
-        }
+        
 
         public async Task CommitTransactionAsync(
             CancellationToken cancellationToken)
@@ -280,12 +278,12 @@ namespace GenericRepository.Repositories.Generic
                 updateUserId.SetValue(entity, userId);
             }
 
-            //var updateRowVersion = entity.GetType().GetProperty("RowVersion");
-            //if (updateRowVersion != null && updateRowVersion.CanWrite)
-            //{
-            //    byte[] RowVersion = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
-            //    updateRowVersion.SetValue(entity, RowVersion);
-            //}
+            var updateRowVersion = entity.GetType().GetProperty("RowVersion");
+            if (updateRowVersion != null && updateRowVersion.CanWrite)
+            {
+                byte[] RowVersion = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+                updateRowVersion.SetValue(entity, RowVersion);
+            }
             return entity;
         }
 
@@ -307,6 +305,14 @@ namespace GenericRepository.Repositories.Generic
                 long? userId = 0;// _userContextService?.UserId; // هرجایی که UserId را می‌گیری
                 deletedByUserId.SetValue(entity, userId);
             }
+
+            var updateRowVersion = entity.GetType().GetProperty("RowVersion");
+            if (updateRowVersion != null && updateRowVersion.CanWrite)
+            {
+                byte[] RowVersion = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+                updateRowVersion.SetValue(entity, RowVersion);
+            }
+
             return entity;
         }
 

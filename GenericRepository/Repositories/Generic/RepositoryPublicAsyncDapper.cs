@@ -29,7 +29,7 @@ namespace GenericRepository.Repositories.Generic
             .GetSchema()
             ?? DbCommandContext.Model.GetDefaultSchema()
             ?? "dbo" : throw new InvalidOperationException(
-             $"Entity {typeof(TEntity).Name} در مدل EF Core پیدا نشد.");
+             $"Entity {typeof(TEntity).Name} in Model EF Core Not Found.");
 
         private string GetIdProperty()
         => DbCommandContext.Model.FindEntityType(typeof(TEntity))?

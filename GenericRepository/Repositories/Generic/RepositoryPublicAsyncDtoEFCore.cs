@@ -38,10 +38,10 @@ namespace GenericRepository.Repositories.Generic
             Expression<Func<TEntity, bool>> predicate,
             CancellationToken cancellationToken)
         {
-            var list = await TableNoTracking.Where(predicate)
-                .ToListAsync(cancellationToken);
+            var dtoList = (await TableNoTracking.Where(predicate)
+                .ToListAsync(cancellationToken))
+                .ConvertListObject<TDto, TEntity>(mapper);
 
-            var dtoList = list.ConvertListObject<TDto, TEntity>(mapper);
             GreadData<TDto> data = new()
             {
                 Data = dtoList,
@@ -51,25 +51,19 @@ namespace GenericRepository.Repositories.Generic
         }
 
         public virtual async Task AddDtoAsync(TDto dto, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            var entity = dto.ConvertObject<TEntity, TDto>(mapper);
-            await base.AddAsync(entity, cancellationToken, saveNow);
-        }
+            => await base.AddAsync(dto.ConvertObject<TEntity, TDto>(mapper), cancellationToken, saveNow);
+        
 
 
         public virtual async Task UpdateDtoAsync(TDto dto, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            var entity = dto.ConvertObject<TEntity, TDto>(mapper);
-            await base.UpdateAsync(entity, cancellationToken, saveNow);
-        }
+            => await base.UpdateAsync(dto.ConvertObject<TEntity, TDto>(mapper), cancellationToken, saveNow);
+        
 
         public virtual async Task<TDto> GetDtoById(CancellationToken cancellationToken, params object[] ids)
-        {
-            var Item = await TableNoTracking.FirstOrDefaultAsync(e =>
-            EF.Property<object>(e, GetIdProperty()).Equals(ids[0]), cancellationToken);
-            var dto = Item.ConvertObject<TDto, TEntity>(mapper);
-            return dto;
-        }
+            => (await TableNoTracking.FirstOrDefaultAsync(e =>
+            EF.Property<object>(e, GetIdProperty()).Equals(ids[0]), cancellationToken))
+            .ConvertObject<TDto, TEntity>(mapper);
+           
 
     }
 
