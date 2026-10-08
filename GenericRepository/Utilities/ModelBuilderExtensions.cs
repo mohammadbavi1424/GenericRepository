@@ -41,9 +41,8 @@ namespace GenericRepository.Utilities
 
 
         public static void AddSequentialGuidForIdConvention(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.AddDefaultValueSqlConvention("Id", typeof(Guid), "NEWSEQUENTIALID()");
-        }
+         =>  modelBuilder.AddDefaultValueSqlConvention("Id", typeof(Guid), "NEWSEQUENTIALID()");
+        
 
         public static void AddDefaultValueSqlConvention(this ModelBuilder modelBuilder, string propertyName, Type propertyType, string defaultValueSql)
         {

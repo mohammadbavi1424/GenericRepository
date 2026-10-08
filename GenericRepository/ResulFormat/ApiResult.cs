@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace GenericRepository.ResualFormat
+namespace GenericRepository.ResulFormat
 {
     public class ApiResult
     {

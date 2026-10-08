@@ -44,16 +44,12 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         }
 
         public void AddDto<TDtoCreate>(TDtoCreate dto, bool saveNow = true)
-        {
-            var entity = dto.ConvertObject<TEntity, TDtoCreate>(mapper);
-            Add(entity, saveNow);
-        }
+            => Add(dto.ConvertObject<TEntity, TDtoCreate>(mapper), saveNow);
+        
 
         public void AddDtoRange<TDtoCreate>(IEnumerable<TDtoCreate> dtos, bool saveNow = true)
-        {
-            var entities = dtos.ToList().ConvertListObject<TEntity, TDtoCreate>(mapper);
-            AddRange(entities, saveNow);
-        }
+            => AddRange(dtos.ToList().ConvertListObject<TEntity, TDtoCreate>(mapper), saveNow);
+        
 
         public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
         {
@@ -78,16 +74,12 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         }
 
         public async Task AddDtoAsync<TDtoCreate>(TDtoCreate dto, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            var entity = dto.ConvertObject<TEntity, TDtoCreate>(mapper);
-            await AddAsync(entity, cancellationToken, saveNow);
-        }
+            => await AddAsync(dto.ConvertObject<TEntity, TDtoCreate>(mapper), cancellationToken, saveNow);
+        
 
         public async Task AddDtoRangeAsync<TDtoCreate>(IEnumerable<TDtoCreate> dtos, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            var entities = dtos.ToList().ConvertListObject<TEntity, TDtoCreate>(mapper);
-            await AddRangeAsync(entities, cancellationToken, saveNow);
-        }
+            => await AddRangeAsync(dtos.ToList().ConvertListObject<TEntity, TDtoCreate>(mapper), cancellationToken, saveNow);
+        
 
     }
 }

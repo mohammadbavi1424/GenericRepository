@@ -560,7 +560,7 @@ namespace GenericRepository.Repositories.Generic
 
         private async Task CreateKeyTempTableAsync(SqlConnection connection,
             DbTransaction transaction, string tempTableName, IProperty keyProperty)
-        => ExecuteSqlAsync(
+        => await ExecuteSqlAsync(
                 connection,
                 transaction,
                  $"""
@@ -633,7 +633,7 @@ namespace GenericRepository.Repositories.Generic
 
         private async Task DropTempTableAsync(SqlConnection connection,
             DbTransaction transaction, string tempTableName, CancellationToken cancellationToken)
-        => ExecuteSqlAsync(
+        => await ExecuteSqlAsync(
                 connection,
                 transaction,
                 $"DROP TABLE IF EXISTS {tempTableName};",
