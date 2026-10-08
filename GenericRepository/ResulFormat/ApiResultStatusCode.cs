@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GenericRepository.ResualtFormat
+namespace GenericRepository.ResulFormat
 {
     public enum ApiResultStatusCode
     {

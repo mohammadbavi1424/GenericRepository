@@ -1,4 +1,4 @@
-using GenericRepository.AutoMigration;
+using GenericRepository.AutoMigration.SQLMigration;
 using GenericRepository.Context;
 using GenericRepository.Contracts.Generic;
 using GenericRepository.Contracts.GenericCleanArchitecture;

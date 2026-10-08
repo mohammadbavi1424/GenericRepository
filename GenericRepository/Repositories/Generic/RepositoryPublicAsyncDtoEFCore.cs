@@ -50,6 +50,20 @@ namespace GenericRepository.Repositories.Generic
             return data;
         }
 
+        public virtual async Task<GreadData<TDto>> GetDtos(CancellationToken cancellationToken)
+        {
+            var dtoList = (await TableNoTracking
+                .ToListAsync(cancellationToken))
+                .ConvertListObject<TDto, TEntity>(mapper);
+
+            GreadData<TDto> data = new()
+            {
+                Data = dtoList,
+                Count = dtoList.Count,
+            };
+            return data;
+        }
+
         public virtual async Task AddDtoAsync(TDto dto, CancellationToken cancellationToken, bool saveNow = true)
             => await base.AddAsync(dto.ConvertObject<TEntity, TDto>(mapper), cancellationToken, saveNow);
         

@@ -1,4 +1,4 @@
-﻿using GenericRepository.AutoMigration;
+﻿using GenericRepository.AutoMigration.SQLMigration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
