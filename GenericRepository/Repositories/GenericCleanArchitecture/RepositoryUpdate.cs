@@ -48,7 +48,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         
 
 
-        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entity, nameof(entity));
 
@@ -66,7 +66,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
         }
 
-        public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entities, nameof(entities));
 
@@ -86,11 +86,11 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
         }
 
-        public async Task UpdateDtoAsync<TDtoUpdate>(TDtoUpdate dto, CancellationToken cancellationToken, bool saveNow = true)
+        public async Task UpdateDtoAsync<TDtoUpdate>(TDtoUpdate dto, CancellationToken cancellationToken = default, bool saveNow = true)
         => await UpdateAsync(dto.ConvertObject<TEntity, TDtoUpdate>(mapper), cancellationToken, saveNow);
         
 
-        public async Task UpdateDtoRangeAsync<TDtoUpdate>(IEnumerable<TDtoUpdate> dtos, CancellationToken cancellationToken, bool saveNow = true)
+        public async Task UpdateDtoRangeAsync<TDtoUpdate>(IEnumerable<TDtoUpdate> dtos, CancellationToken cancellationToken = default, bool saveNow = true)
         => await UpdateRangeAsync(dtos.ToList().ConvertListObject<TEntity, TDtoUpdate>(mapper), cancellationToken, saveNow);
         
 

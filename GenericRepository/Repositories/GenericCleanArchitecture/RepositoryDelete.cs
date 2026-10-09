@@ -48,7 +48,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
             => DeleteRange(dtos.ToList().ConvertListObject<TEntity, TDtoDelete>(mapper), saveNow);
         
      
-        public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
                 Assert.NotNull(entity, nameof(entity));
                 Entities.Remove(entity);
@@ -58,7 +58,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
             
         }
 
-        public virtual async Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
                 Assert.NotNull(entities, nameof(entities));
                 Entities.RemoveRange(entities);
@@ -68,11 +68,11 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
           
         }
 
-        public async Task DeleteDtoAsync<TDtoDelete>(TDtoDelete dto, CancellationToken cancellationToken, bool saveNow = true)
+        public async Task DeleteDtoAsync<TDtoDelete>(TDtoDelete dto, CancellationToken cancellationToken = default, bool saveNow = true)
             => await DeleteAsync(dto.ConvertObject<TEntity, TDtoDelete>(mapper), cancellationToken, saveNow);
         
 
-        public async Task DeleteDtoRangeAsync<TDtoDelete>(IEnumerable<TDtoDelete> dtos, CancellationToken cancellationToken, bool saveNow = true)
+        public async Task DeleteDtoRangeAsync<TDtoDelete>(IEnumerable<TDtoDelete> dtos, CancellationToken cancellationToken = default, bool saveNow = true)
             => await DeleteRangeAsync(dtos.ToList().ConvertListObject<TEntity, TDtoDelete>(mapper), cancellationToken, saveNow);
         
 

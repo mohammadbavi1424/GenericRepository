@@ -7,8 +7,8 @@ namespace GenericRepository.Contracts.Generic
         
         Task<TEntity> GetByIdQueryAsync(params object[] Id);
         Task<GreadData<TEntity>> GetByIdDeletedItemQueryAsync(params object[] Id);
-        Task<GreadData<TEntity>> GetByQueryAsync(CancellationToken cancellationToken, GreadData<TEntity> data);
-        Task<GreadData<TEntity>> GetByQueryDeletedItemsAsync(CancellationToken cancellationToken, GreadData<TEntity> data);
+        Task<GreadData<TEntity>> GetByQueryAsync(GreadData<TEntity> data,CancellationToken cancellationToken = default);
+        Task<GreadData<TEntity>> GetByQueryDeletedItemsAsync(GreadData<TEntity> data, CancellationToken cancellationToken = default);
         Task<GreadData<TEntity>> GetByRangIdQuerAsync(params object[] Ids);
         Task<bool> AddByDapperAsync(TEntity entity);
         Task<bool> UpdateByDapperAsync(TEntity entity);

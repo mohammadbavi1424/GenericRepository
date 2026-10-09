@@ -109,8 +109,8 @@ namespace GenericRepository.Repositories.Generic
 
         #region Get Query
 
-        public virtual async Task<GreadData<TEntity>> GetByQueryAsync(
-            CancellationToken cancellationToken, GreadData<TEntity> data)
+        public virtual async Task<GreadData<TEntity>> GetByQueryAsync(GreadData<TEntity> data,
+            CancellationToken cancellationToken = default)
         => await GetPagedDataAsync(data, isDeleted: false, cancellationToken);
         
 
@@ -119,8 +119,8 @@ namespace GenericRepository.Repositories.Generic
 
         #region Get Deleted Items
 
-        public virtual async Task<GreadData<TEntity>> GetByQueryDeletedItemsAsync(
-                CancellationToken cancellationToken, GreadData<TEntity> data)
+        public virtual async Task<GreadData<TEntity>> GetByQueryDeletedItemsAsync(GreadData<TEntity> data,
+                CancellationToken cancellationToken = default)
         => await GetPagedDataAsync(data, isDeleted: true, cancellationToken);
         
 
@@ -306,7 +306,7 @@ namespace GenericRepository.Repositories.Generic
         #region Private Pagination
 
         private async Task<GreadData<TEntity>> GetPagedDataAsync(GreadData<TEntity> data,
-            bool isDeleted, CancellationToken cancellationToken)
+            bool isDeleted, CancellationToken cancellationToken = default)
         {
             if (data.Page <= 0)
                 data.Page = 1;

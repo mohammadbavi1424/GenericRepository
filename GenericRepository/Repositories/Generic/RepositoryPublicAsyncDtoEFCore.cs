@@ -36,7 +36,7 @@ namespace GenericRepository.Repositories.Generic
 
         public virtual async Task<GreadData<TDto>> GetDtos(
             Expression<Func<TEntity, bool>> predicate,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             var dtoList = (await TableNoTracking.Where(predicate)
                 .ToListAsync(cancellationToken))
@@ -50,7 +50,7 @@ namespace GenericRepository.Repositories.Generic
             return data;
         }
 
-        public virtual async Task<GreadData<TDto>> GetDtos(CancellationToken cancellationToken)
+        public virtual async Task<GreadData<TDto>> GetDtos(CancellationToken cancellationToken = default)
         {
             var dtoList = (await TableNoTracking
                 .ToListAsync(cancellationToken))
@@ -64,16 +64,16 @@ namespace GenericRepository.Repositories.Generic
             return data;
         }
 
-        public virtual async Task AddDtoAsync(TDto dto, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task AddDtoAsync(TDto dto, CancellationToken cancellationToken = default, bool saveNow = true)
             => await base.AddAsync(dto.ConvertObject<TEntity, TDto>(mapper), cancellationToken, saveNow);
         
 
 
-        public virtual async Task UpdateDtoAsync(TDto dto, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateDtoAsync(TDto dto, CancellationToken cancellationToken = default, bool saveNow = true)
             => await base.UpdateAsync(dto.ConvertObject<TEntity, TDto>(mapper), cancellationToken, saveNow);
         
 
-        public virtual async Task<TDto> GetDtoById(CancellationToken cancellationToken, params object[] ids)
+        public virtual async Task<TDto> GetDtoById(CancellationToken cancellationToken = default, params object[] ids)
             => (await TableNoTracking.FirstOrDefaultAsync(e =>
             EF.Property<object>(e, GetIdProperty()).Equals(ids[0]), cancellationToken))
             .ConvertObject<TDto, TEntity>(mapper);

@@ -51,7 +51,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
             => AddRange(dtos.ToList().ConvertListObject<TEntity, TDtoCreate>(mapper), saveNow);
         
 
-        public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
 
             Assert.NotNull(entity, nameof(entity));
@@ -63,7 +63,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
         }
 
-        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entities, nameof(entities));
 
@@ -73,11 +73,11 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
         }
 
-        public async Task AddDtoAsync<TDtoCreate>(TDtoCreate dto, CancellationToken cancellationToken, bool saveNow = true)
+        public async Task AddDtoAsync<TDtoCreate>(TDtoCreate dto, CancellationToken cancellationToken = default, bool saveNow = true)
             => await AddAsync(dto.ConvertObject<TEntity, TDtoCreate>(mapper), cancellationToken, saveNow);
         
 
-        public async Task AddDtoRangeAsync<TDtoCreate>(IEnumerable<TDtoCreate> dtos, CancellationToken cancellationToken, bool saveNow = true)
+        public async Task AddDtoRangeAsync<TDtoCreate>(IEnumerable<TDtoCreate> dtos, CancellationToken cancellationToken = default, bool saveNow = true)
             => await AddRangeAsync(dtos.ToList().ConvertListObject<TEntity, TDtoCreate>(mapper), cancellationToken, saveNow);
         
 

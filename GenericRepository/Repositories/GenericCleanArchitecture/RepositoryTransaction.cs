@@ -14,14 +14,14 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         
 
         public async Task BeginTransactionAsync(
-           CancellationToken cancellationToken)
+           CancellationToken cancellationToken = default)
         => _transaction = await DbCommandContext.Database
                 .BeginTransactionAsync(cancellationToken);
         
 
 
         public async Task CommitTransactionAsync(
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             if (_transaction is null)
                 return;
@@ -32,7 +32,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         }
 
         public async Task RollbackTransactionAsync(
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             if (_transaction is null)
                 return;
