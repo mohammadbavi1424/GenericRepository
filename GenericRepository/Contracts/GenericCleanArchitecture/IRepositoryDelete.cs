@@ -8,10 +8,10 @@ namespace GenericRepository.Contracts.GenericCleanArchitecture
     public interface IRepositoryDelete<TEntity> 
         where TEntity : class
     {
-        Task DeleteAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true);
-        Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true);
-        Task DeleteDtoAsync<TDtoDelete>(TDtoDelete dto, CancellationToken cancellationToken, bool saveNow = true);
-        Task DeleteDtoRangeAsync<TDtoDelete>(IEnumerable<TDtoDelete> dtos, CancellationToken cancellationToken, bool saveNow = true);
+        Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true);
+        Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true);
+        Task DeleteDtoAsync<TDtoDelete>(TDtoDelete dto, CancellationToken cancellationToken = default, bool saveNow = true);
+        Task DeleteDtoRangeAsync<TDtoDelete>(IEnumerable<TDtoDelete> dtos, CancellationToken cancellationToken = default, bool saveNow = true);
         void Delete(TEntity entity, bool saveNow = true);
         void DeleteRange(IEnumerable<TEntity> entities, bool saveNow = true);
         void DeleteDto<TDtoDelete>(TDtoDelete dto, bool saveNow = true);

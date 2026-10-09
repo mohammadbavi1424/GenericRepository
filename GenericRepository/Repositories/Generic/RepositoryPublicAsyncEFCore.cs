@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace GenericRepository.Repositories.Generic
 {
@@ -48,20 +49,18 @@ namespace GenericRepository.Repositories.Generic
 
         #region Async Method
 
-        public virtual async Task<TEntity> GetByIdDeletedAsync(CancellationToken cancellationToken, params object[] ids)
-        {
-           
-            return await TableNoTrackingDeleted
+        public virtual async Task<TEntity> GetByIdDeletedAsync(CancellationToken cancellationToken = default, params object[] ids)
+        => await TableNoTrackingDeleted
                 .FirstOrDefaultAsync(p =>
                 EF.Property<long>(p, GetIdProperty()) == (long)ids[0], cancellationToken);
-        }
+        
 
-        public virtual async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, params object[] ids)
+        public virtual async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken = default, params object[] ids)
         => await TableNoTracking.FirstOrDefaultAsync(p =>
                 EF.Property<long>(p, GetIdProperty()) == (long)ids[0], cancellationToken);
         
 
-        public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entity, nameof(entity));
 
@@ -73,7 +72,7 @@ namespace GenericRepository.Repositories.Generic
                 await DbCommandContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entities, nameof(entities));
             List<TEntity> entitiesChanged = new List<TEntity>();
@@ -84,7 +83,7 @@ namespace GenericRepository.Repositories.Generic
                 await DbCommandContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entity, nameof(entity));
 
@@ -102,7 +101,7 @@ namespace GenericRepository.Repositories.Generic
                 await DbCommandContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entities, nameof(entities));
 
@@ -123,7 +122,7 @@ namespace GenericRepository.Repositories.Generic
                 await DbCommandContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entity, nameof(entity));
             entity = SetDeleteProperty(entity);
@@ -132,7 +131,7 @@ namespace GenericRepository.Repositories.Generic
                 await DbCommandContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entities, nameof(entities));
             List<TEntity> entitiesChanged = new List<TEntity>();
@@ -143,7 +142,7 @@ namespace GenericRepository.Repositories.Generic
                 await DbCommandContext.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task LoadReferenceAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> referenceProperty, CancellationToken cancellationToken)
+        public virtual async Task LoadReferenceAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> referenceProperty, CancellationToken cancellationToken = default)
             where TProperty : class
         {
             Attach(entity);
@@ -152,7 +151,7 @@ namespace GenericRepository.Repositories.Generic
                 await reference.LoadAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task LoadCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collectionProperty, CancellationToken cancellationToken)
+        public virtual async Task LoadCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collectionProperty, CancellationToken cancellationToken = default)
             where TProperty : class
         {
             Attach(entity);
@@ -163,7 +162,7 @@ namespace GenericRepository.Repositories.Generic
         }
 
 
-        public async Task<GreadData<TEntity>> GetListAsync(CancellationToken cancellationToken, GreadData<TEntity> data)
+        public async Task<GreadData<TEntity>> GetListAsync(GreadData<TEntity> data,CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = TableNoTracking;
 
@@ -186,7 +185,7 @@ namespace GenericRepository.Repositories.Generic
 
 
 
-        public Task<GreadData<TEntity>> GetDeletedAsync(CancellationToken cancellationToken, GreadData<TEntity> data)
+        public Task<GreadData<TEntity>> GetDeletedAsync(GreadData<TEntity> data ,CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
@@ -215,14 +214,13 @@ namespace GenericRepository.Repositories.Generic
 
         #region Transaction
         public async Task BeginTransactionAsync(
-            CancellationToken cancellationToken)
-        {
-            _transaction = await DbCommandContext.Database
+            CancellationToken cancellationToken = default)
+            => _transaction = await DbCommandContext.Database
                 .BeginTransactionAsync(cancellationToken);
-        }
+        
 
         public async Task CommitTransactionAsync(
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             if (_transaction is null)
                 return;
@@ -233,7 +231,7 @@ namespace GenericRepository.Repositories.Generic
         }
 
         public async Task RollbackTransactionAsync(
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             if (_transaction is null)
                 return;
@@ -280,12 +278,12 @@ namespace GenericRepository.Repositories.Generic
                 updateUserId.SetValue(entity, userId);
             }
 
-            //var updateRowVersion = entity.GetType().GetProperty("RowVersion");
-            //if (updateRowVersion != null && updateRowVersion.CanWrite)
-            //{
-            //    byte[] RowVersion = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
-            //    updateRowVersion.SetValue(entity, RowVersion);
-            //}
+            var updateRowVersion = entity.GetType().GetProperty("RowVersion");
+            if (updateRowVersion != null && updateRowVersion.CanWrite)
+            {
+                byte[] RowVersion = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+                updateRowVersion.SetValue(entity, RowVersion);
+            }
             return entity;
         }
 
@@ -307,6 +305,14 @@ namespace GenericRepository.Repositories.Generic
                 long? userId = 0;// _userContextService?.UserId; // هرجایی که UserId را می‌گیری
                 deletedByUserId.SetValue(entity, userId);
             }
+
+            var updateRowVersion = entity.GetType().GetProperty("RowVersion");
+            if (updateRowVersion != null && updateRowVersion.CanWrite)
+            {
+                byte[] RowVersion = Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+                updateRowVersion.SetValue(entity, RowVersion);
+            }
+
             return entity;
         }
 

@@ -40,19 +40,15 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         }
 
         public void UpdateDto<TDtoUpdate>(TDtoUpdate dto, bool saveNow = true)
-        {
-            var entity = dto.ConvertObject<TEntity, TDtoUpdate>(mapper);
-            Update(entity, saveNow);
-        }
+            => Update(dto.ConvertObject<TEntity, TDtoUpdate>(mapper), saveNow);
+        
 
         public void UpdateDtoRange<TDtoUpdate>(IEnumerable<TDtoUpdate> dtos, bool saveNow = true)
-        {
-            var entities = dtos.ToList().ConvertListObject<TEntity, TDtoUpdate>(mapper);
-            UpdateRange(entities);
-        }
+        => UpdateRange(dtos.ToList().ConvertListObject<TEntity, TDtoUpdate>(mapper));
+        
 
 
-        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entity, nameof(entity));
 
@@ -70,7 +66,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
         }
 
-        public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
+        public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default, bool saveNow = true)
         {
             Assert.NotNull(entities, nameof(entities));
 
@@ -90,17 +86,13 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
         }
 
-        public async Task UpdateDtoAsync<TDtoUpdate>(TDtoUpdate dto, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            var entity = dto.ConvertObject<TEntity, TDtoUpdate>(mapper);
-            await UpdateAsync(entity, cancellationToken, saveNow);
-        }
+        public async Task UpdateDtoAsync<TDtoUpdate>(TDtoUpdate dto, CancellationToken cancellationToken = default, bool saveNow = true)
+        => await UpdateAsync(dto.ConvertObject<TEntity, TDtoUpdate>(mapper), cancellationToken, saveNow);
+        
 
-        public async Task UpdateDtoRangeAsync<TDtoUpdate>(IEnumerable<TDtoUpdate> dtos, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            var entities = dtos.ToList().ConvertListObject<TEntity, TDtoUpdate>(mapper);
-            await UpdateRangeAsync(entities, cancellationToken, saveNow);
-        }
+        public async Task UpdateDtoRangeAsync<TDtoUpdate>(IEnumerable<TDtoUpdate> dtos, CancellationToken cancellationToken = default, bool saveNow = true)
+        => await UpdateRangeAsync(dtos.ToList().ConvertListObject<TEntity, TDtoUpdate>(mapper), cancellationToken, saveNow);
+        
 
     }
 }

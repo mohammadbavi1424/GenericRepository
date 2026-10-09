@@ -16,20 +16,14 @@ namespace GenericRepository.Utilities
         }
 
         public static List<A> ConvertListObject<A, B>(this List<B> sourceList)
-        {
-            return sourceList.Select(ConvertObject<A, B>).ToList();
-        }
-
+            => sourceList.Select(ConvertObject<A, B>).ToList();
 
         public static A ConvertObject<A, B>(this B source, IMapper mapper)
-        {
-            return mapper.Map<A>(source);
-        }
+            => mapper.Map<A>(source);
 
         public static List<A> ConvertListObject<A, B>(this List<B> sourceList, IMapper mapper)
-        {
-            return mapper.Map<List<A>>(sourceList);
-        }
+            => mapper.Map<List<A>>(sourceList);
+        
 
     }
 

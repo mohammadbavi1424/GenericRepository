@@ -47,7 +47,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
 
 
         public virtual async Task<GreadData<TEntity>> GetByExpressionAsync(Expression<Func<TEntity, bool>> predicate,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = TableNoTracking.Where(predicate);
 
@@ -61,21 +61,20 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         }
 
 
-        public async virtual Task<TEntity> GetByIdAsync(CancellationToken cancellationToken,
+        public async virtual Task<TEntity> GetByIdAsync(CancellationToken cancellationToken = default,
             params object[] ids)
         => await TableNoTracking.FirstOrDefaultAsync(c =>
             EF.Property<object>(c, GetIdProperty()) == ids[0]);
 
 
-        public virtual async Task<TDtoGetById> GetDtoByIdAsync<TDtoGetById>(CancellationToken cancellationToken,
+        public virtual async Task<TDtoGetById> GetDtoByIdAsync<TDtoGetById>(CancellationToken cancellationToken = default,
             params object[] ids)
         => (await TableNoTracking.FirstOrDefaultAsync(c =>
             EF.Property<object>(c, GetIdProperty()) == ids[0]))
                 .ConvertObject<TDtoGetById, TEntity>(mapper);
         
 
-        public async virtual Task<GreadData<TDtoGet>> GetDtosAsync<TDtoGet>(CancellationToken cancellationToken,
-            GreadData<TDtoGet> data)
+        public async virtual Task<GreadData<TDtoGet>> GetDtosAsync<TDtoGet>(GreadData<TDtoGet> data,CancellationToken cancellationToken = default)
             where TDtoGet : class
         {
             IQueryable<TEntity> query = TableNoTracking;
@@ -86,9 +85,10 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
                     EF.Property<object>(c, filter.Property).Equals(filter.Value));
             }
 
-            data.Data = (await query
+            query = query
                 .Skip((data.Page - 1) * data.PageSize)
-                .Take(data.PageSize)
+                .Take(data.PageSize);
+            data.Data = (await query
                 .ToListAsync(cancellationToken)).ConvertListObject<TDtoGet, TEntity>(mapper);
             data.PageCount = data.PageSize;
             data.Count = data.Data.Count();
@@ -110,7 +110,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         }
 
         public async virtual Task<GreadData<TDtoGet>> GetDtosByExpressionAsync<TDtoGet>
-            (Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
+            (Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
             where TDtoGet : class
         {
             IQueryable<TEntity> query = TableNoTracking.Where(predicate);
@@ -145,8 +145,7 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
             return data;
         }
 
-        public async virtual Task<GreadData<TEntity>> GetListAsync(CancellationToken cancellationToken,
-            GreadData<TEntity> data)
+        public async virtual Task<GreadData<TEntity>> GetListAsync(GreadData<TEntity> data,CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = TableNoTracking;
 
