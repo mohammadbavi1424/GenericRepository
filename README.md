@@ -19,24 +19,33 @@ Add ServiceCollection services :
 
 DbConnectionSetting setting = new()
 {
+
     CommandConnectionString = Configuration.GetConnectionString("CommandConnectionString"),
+
     QueryConnectionString = Configuration.GetConnectionString("QueryConnectionString")
+
 };
 
 
 AssembliesSetting assemblies = new();
+
 assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
+
 assemblies.EntitiesConfigurationAssemblies =
     [typeof(IBaseTypeConfiguration<>).Assembly];
+
 
 services.AddGenericConfigurations(setting, assemblies);
 
 OR you want to use one database
 
 AssembliesSetting assemblies = new();
+
 assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
+
 assemblies.EntitiesConfigurationAssemblies =
       [typeof(IBaseTypeConfiguration<>).Assembly];
+
 
 services.AddGenericConfigurations(Configuration.GetConnectionString("CommandConnectionString"), assemblies);
 
@@ -49,11 +58,17 @@ entities :
 
 public class Role : IBaseEntity
 {
-    public int Id { get; set; }
+  
+  public int Id { get; set; }
+
     public string RoleCode { get; set; }
+
     public string Name { get; set; }
+
     public string ScurityStamp { get; set; }
+
     public virtual ICollection<UserRole> UserRoles { get; set; }
+
  }
 
 IBaseEntity is parent interface for detect any entities
@@ -63,17 +78,28 @@ IBaseEntity is parent interface for detect any entities
  {
 
  }
- public interface IBaseEntity<TKey, TDateProperty> : IBaseEntity
+
+ public interface IBaseEntity<TKey, TDateProperty> :  IBaseEntity
  {
+
      public TKey Id { get; set; }
+
      public TDateProperty? CreateDate { get; set; }
+
      public TKey? CreateUserId { get; set; }
+
      public TDateProperty? ModifyDate { get; set; }
+
      public TKey? ModifyUserId { get; set; }
+
      public byte[] RowVersion { get; set; }
+
      public TDateProperty DeletedDate { get; set; }
+
      public TKey? DeletedUserId { get; set; }
+
      public bool? IsDeleted { get; set; }
+
  }
 
 
@@ -88,16 +114,27 @@ public CityGetByIdRequestHandler(IRepositoryPublicAsyncEFCore<Domain.Entities.Lo
     this.repository = repository;
 }
 
+
 and other repository
+
 IRepositorySyncronize<>
+
 IRepositoryPublicAsyncEFCore<>
+
 IRepositoryPublicAsyncDapper<>
+
 IRepositoryPublicAsyncDtoEFCore<>
+
 IRepositoryBulk<>
+
 IRepositoryTransaction<>
+
 IRepositoryAdd<>
+
 IRepositoryUpdate<>
+
 IRepositoryGet<>
+
 IRepositoryDelete<>
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -105,9 +142,14 @@ IRepositoryDelete<>
 if you want the queryable of entities:
 
 IQueryable<TEntity> TableDeleted { get; }
+
 IQueryable<TEntity> TableNoTrackingDeleted { get; }
+
 IQueryable<TEntity> Table { get; }
+
 IQueryable<TEntity> TableNoTracking { get; }
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Table of Contents
 
