@@ -24,10 +24,15 @@ namespace GenericRepository.Repositories.Generic
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") == true);
         public virtual IQueryable<TEntity> TableNoTrackingDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") == true).AsNoTracking();
-        public virtual IQueryable<TEntity> Table =>
+        public virtual IQueryable<TEntity> TableNotDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") != true);
-        public virtual IQueryable<TEntity> TableNoTracking =>
+        public virtual IQueryable<TEntity> TableNoTrackingNotDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") != true).AsNoTracking();
+
+        public virtual IQueryable<TEntity> Table =>
+            EntitiesQuery;
+        public virtual IQueryable<TEntity> TableNoTracking =>
+            EntitiesQuery.AsNoTracking();
 
         public RepositorySyncronize(GenericCommandDbContext dbCommandContext,
             GenericQueryDbContext dbQueryContext,

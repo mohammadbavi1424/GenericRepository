@@ -64,8 +64,7 @@ namespace GenericRepository.Repositories.Generic
             var sql = $"""
                 SELECT *
                 FROM [{GetSchema()}].[{TableName}]
-                WHERE IsDeleted = 0
-                  AND {GetIdProperty()} = @Id
+                WHERE {GetIdProperty()} = @Id
                 """;
 
             using var connection = new SqlConnection(setting.QueryConnectionString);
@@ -91,8 +90,7 @@ namespace GenericRepository.Repositories.Generic
             var sql = $"""
                 SELECT *
                 FROM [{GetSchema()}].[{TableName}]
-                WHERE IsDeleted = 0
-                  AND {GetIdProperty()} IN @Ids
+                WHERE {GetIdProperty()} IN @Ids
                 """;
 
             using var connection = new SqlConnection(setting.QueryConnectionString);
@@ -111,7 +109,7 @@ namespace GenericRepository.Repositories.Generic
 
         public virtual async Task<GreadData<TEntity>> GetByQueryAsync(GreadData<TEntity> data,
             CancellationToken cancellationToken = default)
-        => await GetPagedDataAsync(data, isDeleted: false, cancellationToken);
+        => await GetPagedDataAsync(data, cancellationToken);
         
 
         #endregion
@@ -121,7 +119,7 @@ namespace GenericRepository.Repositories.Generic
 
         public virtual async Task<GreadData<TEntity>> GetByQueryDeletedItemsAsync(GreadData<TEntity> data,
                 CancellationToken cancellationToken = default)
-        => await GetPagedDataAsync(data, isDeleted: true, cancellationToken);
+        => await GetPagedDataAsync(data, cancellationToken);
         
 
         #endregion
@@ -137,8 +135,7 @@ namespace GenericRepository.Repositories.Generic
             var sql = $"""
                 SELECT *
                 FROM [{GetSchema()}].[{TableName}]
-                WHERE IsDeleted = 1
-                  AND {GetIdProperty()} = @Id
+                WHERE {GetIdProperty()} = @Id
                 """;
 
             using var connection = new SqlConnection(setting.QueryConnectionString);
@@ -216,10 +213,9 @@ namespace GenericRepository.Repositories.Generic
         {
 
             var sql = $"""
-                UPDATE [{GetSchema()}].[{TableName}]
-                SET IsDeleted = 1
+                DELETE FROM [{GetSchema()}].[{TableName}]
                 WHERE {GetIdProperty()} = @Id
-                  AND IsDeleted = 0
+                  
                 """;
 
             using var connection = new SqlConnection(setting.CommandConnectionString);
@@ -234,21 +230,21 @@ namespace GenericRepository.Repositories.Generic
 
         #region Restore
 
-        public async Task<bool> RestoreAsync(params object[] ids)
-        {
-            var sql = $"""
-                UPDATE [{GetSchema()}].[{TableName}]
-                SET IsDeleted = 0
-                WHERE {GetIdProperty()} = @Id
-                  AND IsDeleted = 1
-                """;
+        //public async Task<bool> RestoreAsync(params object[] ids)
+        //{
+        //    var sql = $"""
+        //        UPDATE [{GetSchema()}].[{TableName}]
+        //        SET IsDeleted = 0
+        //        WHERE {GetIdProperty()} = @Id
+        //          AND IsDeleted = 1
+        //        """;
 
-            using var connection = new SqlConnection(setting.CommandConnectionString);
+        //    using var connection = new SqlConnection(setting.CommandConnectionString);
 
-            var affectedRows = await connection.ExecuteAsync(sql, new { Id = ids[0] });
+        //    var affectedRows = await connection.ExecuteAsync(sql, new { Id = ids[0] });
 
-            return affectedRows > 0;
-        }
+        //    return affectedRows > 0;
+        //}
 
         #endregion
 
@@ -265,7 +261,7 @@ namespace GenericRepository.Repositories.Generic
                             SELECT 1
                             FROM [{GetSchema()}].[{TableName}]
                             WHERE {GetIdProperty()} = @Id
-                              AND IsDeleted = 0
+                              
                         )
                         THEN 1
                         ELSE 0
@@ -290,7 +286,7 @@ namespace GenericRepository.Repositories.Generic
             var sql = $"""
                 SELECT COUNT(1)
                 FROM [{GetSchema()}].[{TableName}]
-                WHERE IsDeleted = 0
+                
                 """;
 
             using var connection = new SqlConnection(setting.QueryConnectionString);
@@ -305,8 +301,7 @@ namespace GenericRepository.Repositories.Generic
 
         #region Private Pagination
 
-        private async Task<GreadData<TEntity>> GetPagedDataAsync(GreadData<TEntity> data,
-            bool isDeleted, CancellationToken cancellationToken = default)
+        private async Task<GreadData<TEntity>> GetPagedDataAsync(GreadData<TEntity> data, CancellationToken cancellationToken = default)
         {
             if (data.Page <= 0)
                 data.Page = 1;
@@ -318,13 +313,9 @@ namespace GenericRepository.Repositories.Generic
 
             var sql = $"""
                 FROM [{GetSchema()}].[{TableName}]
-                WHERE IsDeleted = @IsDeleted
+                WHERE 1 = 1
                 """;
 
-            parameters.Add(
-                "@IsDeleted",
-                isDeleted,
-                DbType.Boolean);
 
 
             if (data.Filter != null)

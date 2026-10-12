@@ -18,16 +18,23 @@ namespace GenericRepository.Repositories.Generic
         private readonly GenericQueryDbContext DbQueryContext;
         private IDbContextTransaction? _transaction;
 
+
         public DbSet<TEntity> EntitiesCommand { get; }
         public DbSet<TEntity> EntitiesQuery { get; }
         public virtual IQueryable<TEntity> TableDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") == true);
         public virtual IQueryable<TEntity> TableNoTrackingDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") == true).AsNoTracking();
-        public virtual IQueryable<TEntity> Table =>
+
+        public virtual IQueryable<TEntity> TableNotDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") != true);
-        public virtual IQueryable<TEntity> TableNoTracking =>
+        public virtual IQueryable<TEntity> TableNoTrackingNotDeleted =>
             EntitiesQuery.Where(p => EF.Property<bool?>(p, "IsDeleted") != true).AsNoTracking();
+
+        public virtual IQueryable<TEntity> Table =>
+            EntitiesQuery;
+        public virtual IQueryable<TEntity> TableNoTracking =>
+            EntitiesQuery.AsNoTracking();
 
 
         public RepositoryPublicAsyncEFCore(GenericCommandDbContext dbCommandContext,

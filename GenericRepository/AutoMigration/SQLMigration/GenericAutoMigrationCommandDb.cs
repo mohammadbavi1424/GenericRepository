@@ -163,6 +163,26 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 newSnapshot,
                 ref operations);
 
+            operations.AddRange(AddDeletedPrimaryKeys(
+                oldSnapshot,
+                newSnapshot,
+                operations));
+
+            operations.AddRange(AddDeletedIndexes(
+                oldSnapshot,
+                newSnapshot,
+                operations));
+
+            AddDeletedColumns(
+                oldSnapshot,
+                newSnapshot,
+                ref operations);
+
+            AddDeletedTables(
+                oldSnapshot,
+                newSnapshot,
+                ref operations);
+
 
             operations.AddRange(AddChangedForeignKeys(
                 oldSnapshot,
@@ -170,21 +190,14 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 operations));
 
             // 2. Indexes
-            operations.AddRange(AddDeletedIndexes(
-                oldSnapshot,
-                newSnapshot,
-                operations));
-
+            
             operations.AddRange(AddChangedIndexes(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
             // 3. Primary Keys
-            operations.AddRange(AddDeletedPrimaryKeys(
-                oldSnapshot,
-                newSnapshot,
-                operations));
+            
 
             operations.AddRange(AddChangedPrimaryKeys(
                 oldSnapshot,
@@ -193,24 +206,10 @@ namespace GenericRepository.AutoMigration.SQLMigration
 
 
             // 4. Columns
-            AddDeletedColumns(
-                oldSnapshot,
-                newSnapshot,
-                ref operations);
-
             operations.AddRange(AddModifiedColumns(
                 oldSnapshot,
                 newSnapshot,
                 operations));
-
-            // 5. Tables
-            AddDeletedTables(
-                oldSnapshot,
-                newSnapshot,
-                ref operations);
-
-
-            // CREATE PHASE
 
             // 6. Tables
             operations.AddRange(AddNewTables(
