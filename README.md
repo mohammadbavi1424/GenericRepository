@@ -6,7 +6,21 @@ The library is designed to reduce repetitive data-access code and provide a cons
 
 It can be used in traditional applications as well as applications following Clean Architecture principles.
 
----
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+How to use or add this library to your project:
+
+Add ServiceCollection services :
+
+DbConnectionSetting setting = new() { CommandConnectionString = Configuration.GetConnectionString("CommandConnectionString"), QueryConnectionString = Configuration.GetConnectionString("QueryConnectionString") };
+
+AssembliesSetting assemblies = new(); assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly]; assemblies.EntitiesConfigurationAssemblies = [typeof(IBaseTypeConfiguration<>).Assembly];
+
+services.AddGenericConfigurations(setting, assemblies);
+
+Add IApplicationBuilder: app.GenericAppConfiguration();
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Table of Contents
 
