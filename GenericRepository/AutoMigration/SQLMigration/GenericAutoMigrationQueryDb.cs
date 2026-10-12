@@ -163,28 +163,38 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 newSnapshot,
                 ref operations);
 
+            operations.AddRange(AddDeletedPrimaryKeys(
+                oldSnapshot,
+                newSnapshot,
+                operations));
+
+            operations.AddRange(AddDeletedIndexes(
+                oldSnapshot,
+                newSnapshot,
+                operations));
+
+            AddDeletedColumns(
+                oldSnapshot,
+                newSnapshot,
+                ref operations);
+
+            AddDeletedTables(
+                oldSnapshot,
+                newSnapshot,
+                ref operations);
+
 
             operations.AddRange(AddChangedForeignKeys(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 2. Indexes
-            operations.AddRange(AddDeletedIndexes(
-                oldSnapshot,
-                newSnapshot,
-                operations));
 
             operations.AddRange(AddChangedIndexes(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 3. Primary Keys
-            operations.AddRange(AddDeletedPrimaryKeys(
-                oldSnapshot,
-                newSnapshot,
-                operations));
 
             operations.AddRange(AddChangedPrimaryKeys(
                 oldSnapshot,
@@ -192,55 +202,41 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 operations));
 
 
-            // 4. Columns
-            AddDeletedColumns(
-                oldSnapshot,
-                newSnapshot,
-                ref operations);
-
             operations.AddRange(AddModifiedColumns(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 5. Tables
-            AddDeletedTables(
-                oldSnapshot,
-                newSnapshot,
-                ref operations);
 
-
-            // CREATE PHASE
-
-            // 6. Tables
             operations.AddRange(AddNewTables(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 7. Columns
+
             operations.AddRange(AddNewColumns(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 8. Primary Keys
+
             operations.AddRange(AddNewPrimaryKeys(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 9. Indexes
+
             operations.AddRange(AddNewIndexes(
                 oldSnapshot,
                 newSnapshot,
                 operations));
 
-            // 10. Foreign Keys
+
             operations.AddRange(AddNewForeignKeys(
                 oldSnapshot,
                 newSnapshot,
                 operations));
+
 
             return operations
                 .Distinct()
@@ -315,7 +311,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                     createTable);
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -356,7 +352,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -398,6 +394,8 @@ namespace GenericRepository.AutoMigration.SQLMigration
                             oldTable.Schema
                     });
             }
+
+            operations = operations.Distinct().ToList();
 
         }
 
@@ -446,6 +444,8 @@ namespace GenericRepository.AutoMigration.SQLMigration
                         });
                 }
             }
+
+            operations = operations.Distinct().ToList();
 
         }
 
@@ -557,7 +557,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -597,7 +597,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                     });
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -666,7 +666,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                     });
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
         private List<MigrationOperation> AddNewPrimaryKeys(
@@ -713,7 +713,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                             newPk.Columns.ToArray()
                     });
             }
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -761,7 +761,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -823,7 +823,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -874,7 +874,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -1002,6 +1002,8 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
+            operations = operations.Distinct().ToList();
+
         }
 
 
@@ -1064,7 +1066,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 
@@ -1104,7 +1106,7 @@ namespace GenericRepository.AutoMigration.SQLMigration
                 }
             }
 
-            return operations;
+            return operations.Distinct().ToList();
         }
 
 

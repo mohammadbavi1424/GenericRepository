@@ -17,10 +17,20 @@ namespace GenericRepository.Repositories.GenericCleanArchitecture
         private readonly GenericQueryDbContext DbQueryContext;
         private readonly IMapper mapper;
 
-        public virtual IQueryable<TEntity> Table =>
+        public virtual IQueryable<TEntity> TableDeleted =>
+            Entities.Where(p => EF.Property<bool?>(p, "IsDeleted") == true);
+        public virtual IQueryable<TEntity> TableNoTrackingDeleted =>
+            Entities.Where(p => EF.Property<bool?>(p, "IsDeleted") == true).AsNoTracking();
+
+        public virtual IQueryable<TEntity> TableNotDeleted =>
             Entities.Where(p => EF.Property<bool?>(p, "IsDeleted") != true);
-        public virtual IQueryable<TEntity> TableNoTracking =>
+        public virtual IQueryable<TEntity> TableNoTrackingNotDeleted =>
             Entities.Where(p => EF.Property<bool?>(p, "IsDeleted") != true).AsNoTracking();
+
+        public virtual IQueryable<TEntity> Table =>
+            Entities;
+        public virtual IQueryable<TEntity> TableNoTracking =>
+            Entities;
 
         private string GetIdProperty()
         =>  DbQueryContext.Model.FindEntityType(typeof(TEntity))
