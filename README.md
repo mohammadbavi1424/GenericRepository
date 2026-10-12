@@ -1,4 +1,4 @@
-Generic Repository
+Generic Repository With Auto Migration
 
 MHB.GenericRepositories is a reusable and extensible generic repository framework for modern .NET applications.
 
