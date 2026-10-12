@@ -61,6 +61,32 @@ IBaseEntity is parent interface for detect any entities
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Example of using their repositories :
+
+private readonly IRepositoryPublicAsyncEFCore<Domain.Entities.Location.City> repository;
+
+public CityGetByIdRequestHandler(IRepositoryPublicAsyncEFCore<Domain.Entities.Location.City> repository)
+{
+    this.repository = repository;
+}
+
+and other repository
+IRepositorySyncronize<>
+IRepositoryPublicAsyncEFCore<>
+IRepositoryPublicAsyncDapper<>
+IRepositoryPublicAsyncDtoEFCore<>
+IRepositoryBulk<>
+IRepositoryTransaction<>
+IRepositoryAdd<>
+IRepositoryUpdate<>
+IRepositoryGet<>
+IRepositoryDelete<>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+if you want the queryable of entities:
+
 IQueryable<TEntity> TableDeleted { get; }
 IQueryable<TEntity> TableNoTrackingDeleted { get; }
 IQueryable<TEntity> Table { get; }
