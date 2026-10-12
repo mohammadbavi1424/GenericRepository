@@ -31,8 +31,33 @@ assemblies.EntitiesConfigurationAssemblies =
 
 services.AddGenericConfigurations(setting, assemblies);
 
+OR you want to use one database
+
+AssembliesSetting assemblies = new();
+assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
+assemblies.EntitiesConfigurationAssemblies =
+      [typeof(IBaseTypeConfiguration<>).Assembly];
+
+services.AddGenericConfigurations(Configuration.GetConnectionString("CommandConnectionString"), assemblies);
+
+
+
 Add IApplicationBuilder:
 app.GenericAppConfiguration();
+
+entities :
+
+public class Role : IBaseEntity
+{
+    public int Id { get; set; }
+    public string RoleCode { get; set; }
+    public string Name { get; set; }
+    public string ScurityStamp { get; set; }
+    public virtual ICollection<UserRole> UserRoles { get; set; }
+ }
+
+IBaseEntity is parent interface for detect any entities
+
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
