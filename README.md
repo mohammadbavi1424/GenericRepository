@@ -5,22 +5,41 @@ MHBavi.GenericRepositories is a reusable and extensible generic repository frame
 The library is designed to reduce repetitive data-access code and provide a consistent infrastructure for applications using Entity Framework Core, Dapper, AutoMapper, and SQL Server.
 
 It can be used in traditional applications as well as applications following Clean Architecture principles.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
------------------------------------------------------------------------------------------------------------------------------------------------------------
+Veri important :
+You cann't using of value objects in your entities , this project is Auto migration with generic repository and you don't need to create context 
+and crud repository if you have questions please ask me your question by this email { mohammadbavi1424@gmail.com } 
+please send me your vibes and help me to update this repository 🙏🙏
 
-How to use or add this library to your project:
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+how to use or add this library  to your project: 
 
-Add ServiceCollection services :
+Add ServiceCollection services : 
 
-DbConnectionSetting setting = new() { CommandConnectionString = Configuration.GetConnectionString("CommandConnectionString"), QueryConnectionString = Configuration.GetConnectionString("QueryConnectionString") };
+DbConnectionSetting setting = new()
+{
+    CommandConnectionString = Configuration.GetConnectionString("CommandConnectionString"),
+    QueryConnectionString = Configuration.GetConnectionString("QueryConnectionString")
+};
 
-AssembliesSetting assemblies = new(); assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly]; assemblies.EntitiesConfigurationAssemblies = [typeof(IBaseTypeConfiguration<>).Assembly];
+
+AssembliesSetting assemblies = new();
+assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
+assemblies.EntitiesConfigurationAssemblies =
+    [typeof(IBaseTypeConfiguration<>).Assembly];
 
 services.AddGenericConfigurations(setting, assemblies);
 
-Add IApplicationBuilder: app.GenericAppConfiguration();
+Add IApplicationBuilder:
+app.GenericAppConfiguration();
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+IQueryable<TEntity> TableDeleted { get; }
+IQueryable<TEntity> TableNoTrackingDeleted { get; }
+IQueryable<TEntity> Table { get; }
+IQueryable<TEntity> TableNoTracking { get; }
 
 Table of Contents
 
@@ -1055,7 +1074,7 @@ Package:
 
 Target Framework:
 
-Dot NET Core 8,9,10
+Dot NET Core 10
 
 ---
 
