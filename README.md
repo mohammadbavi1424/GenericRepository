@@ -17,37 +17,37 @@ how to use or add this library  to your project:
 
 Add ServiceCollection services : 
 
-DbConnectionSetting setting = new()
-{
+    DbConnectionSetting setting = new()
+    {
 
     CommandConnectionString = Configuration.GetConnectionString("CommandConnectionString"),
 
     QueryConnectionString = Configuration.GetConnectionString("QueryConnectionString")
 
-};
+    };
 
 
-AssembliesSetting assemblies = new();
+    AssembliesSetting assemblies = new();
 
-assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
+    assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
 
-assemblies.EntitiesConfigurationAssemblies =
+    assemblies.EntitiesConfigurationAssemblies =
     [typeof(IBaseTypeConfiguration<>).Assembly];
 
 
-services.AddGenericConfigurations(setting, assemblies);
+    services.AddGenericConfigurations(setting, assemblies);
 
 OR you want to use one database
 
-AssembliesSetting assemblies = new();
+    AssembliesSetting assemblies = new();
 
-assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
+    assemblies.EntitiesAssemblies = [typeof(BaseEntity).Assembly];
 
-assemblies.EntitiesConfigurationAssemblies =
+    assemblies.EntitiesConfigurationAssemblies =
       [typeof(IBaseTypeConfiguration<>).Assembly];
 
 
-services.AddGenericConfigurations(Configuration.GetConnectionString("CommandConnectionString"), assemblies);
+    services.AddGenericConfigurations(Configuration.GetConnectionString("CommandConnectionString"), assemblies);
 
 
 
@@ -56,10 +56,10 @@ app.GenericAppConfiguration();
 
 entities :
 
-public class Role : IBaseEntity
-{
+    public class Role : IBaseEntity
+    {
   
-  public int Id { get; set; }
+    public int Id { get; set; }
 
     public string RoleCode { get; set; }
 
@@ -74,13 +74,13 @@ public class Role : IBaseEntity
 IBaseEntity is parent interface for detect any entities
 
 
- public interface IBaseEntity
- {
+     public interface IBaseEntity
+     {
 
- }
+     }
 
- public interface IBaseEntity<TKey, TDateProperty> :  IBaseEntity
- {
+     public interface IBaseEntity<TKey, TDateProperty> :  IBaseEntity
+     {
 
      public TKey Id { get; set; }
 
@@ -100,7 +100,7 @@ IBaseEntity is parent interface for detect any entities
 
      public bool? IsDeleted { get; set; }
 
- }
+     }
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -109,45 +109,45 @@ Example of using their repositories :
 
 private readonly IRepositoryPublicAsyncEFCore<Domain.Entities.Location.City> repository;
 
-public CityGetByIdRequestHandler(IRepositoryPublicAsyncEFCore<Domain.Entities.Location.City> repository)
-{
-    this.repository = repository;
-}
+    public CityGetByIdRequestHandler(IRepositoryPublicAsyncEFCore<Domain.Entities.Location.City> repository)
+    {
+        this.repository = repository;
+    }
 
 
 and other repository
 
-IRepositorySyncronize<>
+    IRepositorySyncronize<>
 
-IRepositoryPublicAsyncEFCore<>
+    IRepositoryPublicAsyncEFCore<>
 
-IRepositoryPublicAsyncDapper<>
+    IRepositoryPublicAsyncDapper<>
 
-IRepositoryPublicAsyncDtoEFCore<>
+    IRepositoryPublicAsyncDtoEFCore<>
 
-IRepositoryBulk<>
+    IRepositoryBulk<>
 
-IRepositoryTransaction<>
+    IRepositoryTransaction<>
 
-IRepositoryAdd<>
+    IRepositoryAdd<>
 
-IRepositoryUpdate<>
+    IRepositoryUpdate<>
 
-IRepositoryGet<>
+    IRepositoryGet<>
 
-IRepositoryDelete<>
+    IRepositoryDelete<>
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if you want the queryable of entities:
 
-IQueryable<TEntity> TableDeleted { get; }
+    IQueryable<TEntity> TableDeleted { get; }
 
-IQueryable<TEntity> TableNoTrackingDeleted { get; }
+    IQueryable<TEntity> TableNoTrackingDeleted { get; }
 
-IQueryable<TEntity> Table { get; }
+    IQueryable<TEntity> Table { get; }
 
-IQueryable<TEntity> TableNoTracking { get; }
+    IQueryable<TEntity> TableNoTracking { get; }
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -189,8 +189,8 @@ Instead of implementing the same repository logic repeatedly in every applicatio
 
 The framework supports both:
 
-Application
-    |
+    Application
+        |
     +-- Generic Repository
             |
             +-- Entity Framework Core
@@ -278,20 +278,21 @@ Architecture
 
 A typical application using the library can be structured as follows:
 
-MyApplication
-│
-├── Domain
-│   ├── Entities
-│   └── Configurations
-│
-├── Application
-│   ├── Services
-│   └── DTOs
-│
-├── Infrastructure
-│   └── Persistence
-│
-└── MHB.GenericRepositories
+    MyApplication
+    │
+    ├── Domain
+    │   ├── Entities
+    │   └── Configurations
+    │
+    ├── Application
+    │   ├── Services
+    │   └── DTOs
+    │
+    ├── Infrastructure
+    │   └── Persistence
+    │
+    └── MHB.GenericRepositories
+
     ├── Context
     ├── Contracts
     ├── Repositories
@@ -303,7 +304,7 @@ The generic repository library is intended to remain independent from applicatio
 
 The consuming application provides its entity and configuration assemblies through "AssembliesSetting".
 
----
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Installation
 
@@ -331,16 +332,16 @@ Using DbConnectionSetting
 
 The recommended approach when both Command and Query connection strings are required is:
 
-services.AddGenericConfigurations(
-    new DbConnectionSetting
-    {
-        CommandConnectionString = configuration
+    services.AddGenericConfigurations(
+        new DbConnectionSetting
+        {
+            CommandConnectionString = configuration
             .GetConnectionString("CommandDatabase"),
 
-        QueryConnectionString = configuration
+            QueryConnectionString = configuration
             .GetConnectionString("QueryDatabase")
-    },
-    assemblies);
+        },
+        assemblies);
 
 ---
 
@@ -362,23 +363,23 @@ services.AddGenericConfigurations(
 
 In this configuration:
 
-Write Operations
+    Write Operations
       |
       v
-CommandConnectionString
+    CommandConnectionString
       |
       v
-GenericCommandDbContext
+    GenericCommandDbContext
 
 and:
 
-Read Operations
+    Read Operations
       |
       v
-QueryConnectionString
+    QueryConnectionString
       |
       v
-GenericQueryDbContext
+    GenericQueryDbContext
 
 ---
 
@@ -386,9 +387,9 @@ Using a Single Database
 
 If the application uses only one database, a single connection string can be provided:
 
-services.AddGenericConfigurations(
-    configuration.GetConnectionString("DefaultConnection"),
-    assemblies);
+    services.AddGenericConfigurations(
+        configuration.GetConnectionString("DefaultConnection"),
+        assemblies);
 
 The library configures the Command and Query DbContexts using the available connection string.
 
@@ -402,8 +403,8 @@ The framework discovers entities and Entity Framework configurations from assemb
 
 Example:
 
-var assemblies = new AssembliesSetting
-{
+    var assemblies = new AssembliesSetting
+    {
     EntitiesAssemblies = new[]
     {
         typeof(User).Assembly
@@ -413,17 +414,17 @@ var assemblies = new AssembliesSetting
     {
         typeof(UserConfiguration).Assembly
     }
-};
+    };
 
 Then:
 
-services.AddGenericConfigurations(
-    configuration.GetConnectionString("DefaultConnection"),
-    assemblies);
+    services.AddGenericConfigurations(
+        configuration.GetConnectionString("DefaultConnection"),
+        assemblies);
 
 This allows the repository framework to remain independent from the application's Domain project.
 
----
+----------------------------------------------------------------------------------------------------------------------------
 
 Entity Discovery
 
@@ -435,22 +436,22 @@ The "GenericCommandDbContext" and "GenericQueryDbContext" use the configured ass
 
 This means the application does not need to manually register every entity inside the generic repository framework.
 
----
+-----------------------------------------------------------------------------------------------------------------------------
 
 Entity Example
 
 A typical entity can be defined in the application:
 
-public class User : IBaseEntity
-{
-    public int UserId { get; set; }
+    public class User : IBaseEntity
+    {
+        public int UserId { get; set; }
 
-    public string Name { get; set; }
+        public string Name { get; set; }
 
-    public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
-    public bool IsDeleted { get; set; }
-}
+        public bool IsDeleted { get; set; }
+    }
 
 The repository framework does not require the primary key to be named "Id".
 
@@ -482,18 +483,18 @@ for each context.
 
 Conceptually:
 
-Application Startup
+    Application Startup
         |
         v
-Create Service Scope
+    Create Service Scope
         |
         +-----------------------+
         |                       |
         v                       v
-Command DbContext        Query DbContext
+    Command DbContext        Query DbContext
         |                       |
         v                       v
-Database.Migrate()       Database.Migrate()
+    Database.Migrate()       Database.Migrate()
 
 This allows pending EF Core migrations to be applied automatically when the application starts.
 
@@ -507,19 +508,19 @@ The package registers several repository implementations automatically.
 
 Generic repositories
 
-IRepositorySyncronize<TEntity>
-IRepositoryPublicAsyncEFCore<TEntity>
-IRepositoryPublicAsyncDapper<TEntity>
-IRepositoryPublicAsyncDtoEFCore<TEntity, TDto>
-IRepositoryBulk<TEntity>
+    IRepositorySyncronize<TEntity>
+    IRepositoryPublicAsyncEFCore<TEntity>
+    IRepositoryPublicAsyncDapper<TEntity>
+    IRepositoryPublicAsyncDtoEFCore<TEntity, TDto>
+    IRepositoryBulk<TEntity>
 
 Clean Architecture repositories
 
-IRepositoryTransaction
-IRepositoryAdd<TEntity>
-IRepositoryUpdate<TEntity>
-IRepositoryGet<TEntity>
-IRepositoryDelete<TEntity>
+    IRepositoryTransaction
+    IRepositoryAdd<TEntity>
+    IRepositoryUpdate<TEntity>
+    IRepositoryGet<TEntity>
+    IRepositoryDelete<TEntity>
 
 All repository implementations are registered with Scoped lifetime.
 
@@ -539,16 +540,16 @@ It is intended for common EF Core data-access operations.
 
 Example dependency injection:
 
-public class UserService
-{
-    private readonly IRepositoryPublicAsyncEFCore<User> _repository;
-
-    public UserService(
-        IRepositoryPublicAsyncEFCore<User> repository)
+    public class UserService
     {
-        _repository = repository;
+        private readonly IRepositoryPublicAsyncEFCore<User> _repository;
+
+        public UserService(
+            IRepositoryPublicAsyncEFCore<User> repository)
+        {
+            _repository = repository;
+        }
     }
-}
 
 The repository can then be used to perform operations against the entity.
 
@@ -573,16 +574,16 @@ Dapper can be useful when:
 
 Example:
 
-public class UserQueryService
-{
-    private readonly IRepositoryPublicAsyncDapper<User> _repository;
-
-    public UserQueryService(
-        IRepositoryPublicAsyncDapper<User> repository)
+    public class UserQueryService
     {
-        _repository = repository;
+        private readonly IRepositoryPublicAsyncDapper<User> _repository;
+
+        public UserQueryService(
+            IRepositoryPublicAsyncDapper<User> repository)
+        {
+            _repository = repository;
+        }
     }
-}
 
 The repository uses EF Core metadata to determine information such as:
 
@@ -609,20 +610,20 @@ AutoMapper is used to convert between entities and DTOs.
 
 Example:
 
-public class UserDto
-{
-    public int UserId { get; set; }
+    public class UserDto
+    {
+        public int UserId { get; set; }
 
-    public string Name { get; set; }
-}
+        public string Name { get; set; }
+    }
 
 The repository can work with:
 
-Entity
-  |
-  | AutoMapper
-  v
-DTO
+    Entity
+      |
+      | AutoMapper
+      v
+    DTO
 
 This helps prevent repetitive mapping code in application services.
 
@@ -632,11 +633,11 @@ Bulk Repository
 
 For large datasets:
 
-IRepositoryBulk<TEntity>
+    IRepositoryBulk<TEntity>
 
 Implementation:
 
-RepositoryBulk<TEntity>
+    RepositoryBulk<TEntity>
 
 The bulk repository is intended for high-volume operations such as:
 
@@ -670,15 +671,15 @@ Synchronization Repository
 
 The framework also provides:
 
-IRepositorySyncronize<TEntity>
+    IRepositorySyncronize<TEntity>
 
 with:
 
-RepositorySyncronize<TEntity>
+    RepositorySyncronize<TEntity>
 
 This repository is intended for synchronization scenarios where application data needs to be synchronized with another data source.
 
----
+------------------------------------------------------------------------------------------------------------------------------------
 
 Clean Architecture Support
 
@@ -686,26 +687,26 @@ For applications following Clean Architecture, the package provides separated re
 
 Instead of using one large repository interface, responsibilities can be separated into:
 
-IRepositoryAdd<TEntity>
-IRepositoryUpdate<TEntity>
-IRepositoryGet<TEntity>
-IRepositoryDelete<TEntity>
-IRepositoryTransaction
+    IRepositoryAdd<TEntity>
+    IRepositoryUpdate<TEntity>
+    IRepositoryGet<TEntity>
+    IRepositoryDelete<TEntity>
+    IRepositoryTransaction
 
 This allows an application to depend only on the repository capabilities it actually needs.
 
 For example:
 
-public class UserService
-{
-    private readonly IRepositoryGet<User> _userRepository;
-
-    public UserService(
-        IRepositoryGet<User> userRepository)
+    public class UserService
     {
-        _userRepository = userRepository;
+        private readonly IRepositoryGet<User> _userRepository;
+
+        public UserService(
+            IRepositoryGet<User> userRepository)
+        {
+            _userRepository = userRepository;
+        }
     }
-}
 
 This approach follows the Interface Segregation Principle and works well with Clean Architecture.
 
@@ -721,21 +722,21 @@ Example:
 
 await transaction.BeginTransactionAsync();
 
-try
-{
-    // Database operations
+    try
+    {
+        // Database operations
 
-    await transaction.CommitTransactionAsync();
-}
-catch
-{
-    await transaction.RollbackTransactionAsync();
-    throw;
-}
+        await transaction.CommitTransactionAsync();
+    }
+    catch
+    {
+        await transaction.RollbackTransactionAsync();
+        throw;
+    }
 
 Transactions are useful when several operations must succeed or fail as a single unit.
 
----
+-------------------------------------------------------------------------------------------------------------------------------
 
 Soft Delete
 
@@ -743,27 +744,27 @@ The framework supports soft deletion.
 
 Instead of physically removing a record:
 
-DELETE FROM Users
+    DELETE FROM Users
 
 the entity can remain in the database while its deletion state is changed.
 
 For example:
 
-IsDeleted = true;
+    IsDeleted = true;
 
 The repository provides separate queryable access for normal and deleted records.
 
 Typical concepts include:
 
-Table
-TableNoTracking
+    Table
+    TableNoTracking
 
-TableDeleted
-TableNoTrackingDeleted
+    TableDeleted
+    TableNoTrackingDeleted
 
 This makes it possible to keep deleted records while excluding them from normal application queries.
 
----
+---------------------------------------------------------------------------------------------------------------------------------------
 
 Primary Key Handling
 
@@ -783,11 +784,11 @@ Instead, EF Core metadata can be used to discover the configured primary key.
 
 For example, an entity may use:
 
-public int UserId { get; set; }
+    public int UserId { get; set; }
 
 while another entity may use:
 
-public Guid EmployeeKey { get; set; }
+    public Guid EmployeeKey { get; set; }
 
 The repository infrastructure can work with both.
 
@@ -799,25 +800,25 @@ Composite primary keys can also be represented without forcing the repository to
 
 For example:
 
-modelBuilder.Entity<OrderItem>()
-    .HasKey(x => new
-    {
-        x.OrderId,
-        x.ProductId
-    });
+    modelBuilder.Entity<OrderItem>()
+        .HasKey(x => new
+        {
+            x.OrderId,
+            x.ProductId
+        });
 
 Repository methods that work with entity keys can receive key values through:
 
-params object[]
+    params object[]
 
 For example:
 
-await repository.GetAsync(cancelationToken,
-    productId);
+    await repository.GetAsync(cancelationToken,
+        productId);
 
 This approach allows the repository to remain independent from the concrete key structure of the entity.
 
----
+------------------------------------------------------------------------------------------------------------------------
 
 Pagination
 
@@ -825,28 +826,28 @@ The framework provides support for paginated queries.
 
 The general query flow is:
 
-Filter
-   |
-   v
-Sort
-   |
-   v
-Skip
-   |
-   v
-Take
-   |
-   v
-Result
+    Filter
+       |
+       v
+    Sort
+       |
+       v
+    Skip
+       |
+       v
+    Take
+       |
+       v
+    Result
 
 Example concept:
 
-var result = await repository.GetListAsync(
-    filter,cancelationToken);
+    var result = await repository.GetListAsync(
+        filter,cancelationToken);
 
 Pagination is especially important when working with large tables because retrieving an entire table can cause unnecessary memory consumption and database load.
 
----
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Entity Configuration
 
@@ -854,18 +855,18 @@ Entity configurations can be maintained separately from entities.
 
 Example:
 
-public class UserConfiguration
+    public class UserConfiguration
     : IEntityTypeConfiguration<User>
-{
-    public void Configure(
-        EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(x => x.UserId);
+        public void Configure(
+            EntityTypeBuilder<User> builder)
+        {
+            builder.HasKey(x => x.UserId);
 
-        builder.Property(x => x.Name)
-            .HasMaxLength(200);
+            builder.Property(x => x.Name)
+                .HasMaxLength(200);
+        }
     }
-}
 
 The configuration assembly is then supplied through:
 
@@ -873,7 +874,7 @@ AssembliesSetting
 
 This allows the generic DbContexts to discover the application's EF Core configurations automatically.
 
----
+---------------------------------------------------------------------------------------------------------------------------
 
 Dependency Injection
 
@@ -881,95 +882,95 @@ The package automatically registers its repositories using the Scoped lifetime.
 
 Equivalent registrations include:
 
-services.AddScoped(
-    typeof(IRepositoryPublicAsyncEFCore<>),
-    typeof(RepositoryPublicAsyncEFCore<>));
+    services.AddScoped(
+        typeof(IRepositoryPublicAsyncEFCore<>),
+        typeof(RepositoryPublicAsyncEFCore<>));
 
 and:
 
-services.AddScoped(
-    typeof(IRepositoryPublicAsyncDapper<>),
-    typeof(RepositoryPublicAsyncDapper<>));
+    services.AddScoped(
+        typeof(IRepositoryPublicAsyncDapper<>),
+        typeof(RepositoryPublicAsyncDapper<>));
 
 Bulk repositories:
 
-services.AddScoped(
-    typeof(IRepositoryBulk<>),
-    typeof(RepositoryBulk<>));
+    services.AddScoped(
+        typeof(IRepositoryBulk<>),
+        typeof(RepositoryBulk<>));
 
 Clean Architecture repositories:
 
-services.AddScoped(
-    typeof(IRepositoryAdd<>),
-    typeof(RepositoryAdd<>));
+    services.AddScoped(
+        typeof(IRepositoryAdd<>),
+        typeof(RepositoryAdd<>));
 
-services.AddScoped(
-    typeof(IRepositoryUpdate<>),
-    typeof(RepositoryUpdate<>));
+    services.AddScoped(
+        typeof(IRepositoryUpdate<>),
+        typeof(RepositoryUpdate<>));
 
-services.AddScoped(
-    typeof(IRepositoryGet<>),
-    typeof(RepositoryGet<>));
+    services.AddScoped(
+        typeof(IRepositoryGet<>),
+        typeof(RepositoryGet<>));
 
-services.AddScoped(
-    typeof(IRepositoryDelete<>),
-    typeof(RepositoryDelete<>));
+    services.AddScoped(
+        typeof(IRepositoryDelete<>),
+        typeof(RepositoryDelete<>));
 
 The application therefore does not need to register every generic repository manually.
 
----
+-------------------------------------------------------------------------------------------------------------------------------
 
 Complete ASP.NET Core Example
 
 A basic application configuration can look like this:
 
-var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
-var assemblies = new AssembliesSetting
-{
-    EntitiesAssemblies = new[]
+    var assemblies = new AssembliesSetting
     {
-        typeof(User).Assembly
-    },
+        EntitiesAssemblies = new[]
+        {
+            typeof(User).Assembly
+        },
 
-    EntitiesConfigurationAssemblies = new[]
-    {
-        typeof(UserConfiguration).Assembly
-    }
-};
+        EntitiesConfigurationAssemblies = new[]
+        {
+            typeof(UserConfiguration).Assembly
+        }
+    };
 
-builder.Services.AddGenericConfigurations(
-    builder.Configuration
-        .GetConnectionString("DefaultConnection"),
-    assemblies);
+    builder.Services.AddGenericConfigurations(
+        builder.Configuration
+            .GetConnectionString("DefaultConnection"),
+        assemblies);
 
-var app = builder.Build();
+    var app = builder.Build();
 
-app.GenericAppConfiguration();
+    app.GenericAppConfiguration();
 
-app.Run();
+    app.Run();
 
----
+-------------------------------------------------------------------------------------------------------------------------------------
 
 Command / Query Example
 
 For applications using separate databases:
 
-var assemblies = new AssembliesSetting
-{
-    EntitiesAssemblies = new[]
+    var assemblies = new AssembliesSetting
     {
-        typeof(User).Assembly
-    },
+        EntitiesAssemblies = new[]
+        {
+            typeof(User).Assembly
+        },
 
-    EntitiesConfigurationAssemblies = new[]
-    {
-        typeof(UserConfiguration).Assembly
-    }
-};
+        EntitiesConfigurationAssemblies = new[]
+        {
+            typeof(UserConfiguration).Assembly
+        }
+    };
 
-builder.Services.AddGenericConfigurations(
-    builder.Configuration
+    builder.Services.AddGenericConfigurations(
+        builder.Configuration
         .GetConnectionString("CommandDatabase"),
 
     builder.Configuration
@@ -991,7 +992,7 @@ The architecture becomes:
 
 This configuration can be useful in systems that require independent optimization of read and write workloads.
 
----
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 Recommended Usage
 
@@ -1063,7 +1064,7 @@ Clean Architecture Compatibility
 
 Repository responsibilities can be separated into smaller interfaces.
 
----
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Requirements
 
@@ -1073,13 +1074,13 @@ The current package targets:
 
 Main technologies:
 
-Entity Framework Core 8,9,10
+Entity Framework Core 10
 Dapper
 AutoMapper
 SQL Server
 Microsoft.Extensions.DependencyInjection
 
----
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 Important Notes
 
@@ -1115,32 +1116,32 @@ Example Project Structure
 
 A recommended application structure:
 
-MyProject
-│
-├── Domain
-│   ├── Entities
-│   │   ├── User.cs
-│   │   └── Order.cs
-│   │
-│   └── Configurations
-│       ├── UserConfiguration.cs
-│       └── OrderConfiguration.cs
-│
-├── Application
-│   ├── DTOs
-│   ├── Services
-│   └── Interfaces
-│
-├── Infrastructure
-│   └── Persistence
-│
-└── API
-    ├── Controllers
-    └── Program.cs
+    MyProject
+    │
+    ├── Domain
+    │   ├── Entities
+    │   │   ├── User.cs
+    │   │   └── Order.cs
+    │   │
+    │   └── Configurations
+    │       ├── UserConfiguration.cs
+    │       └── OrderConfiguration.cs
+    │
+    ├── Application
+    │   ├── DTOs
+    │   ├── Services
+    │   └── Interfaces
+    │
+    ├── Infrastructure
+    │   └── Persistence
+    │
+    └── API
+        ├── Controllers
+        └── Program.cs
 
 The generic repository infrastructure remains reusable and independent of these application-specific projects.
 
----
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 Summary
 
@@ -1186,7 +1187,7 @@ Target Framework:
 
 Dot NET Core 10
 
----
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 License
 
