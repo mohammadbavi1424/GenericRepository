@@ -1,0 +1,557 @@
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.RenameTable(
+            name: "TempFileImportInfo",
+            newName: "TempFileImportInfo",
+            newSchema: "CARD");
+
+        migrationBuilder.RenameTable(
+            name: "OnlineCardRequestInfo",
+            newName: "OnlineCardRequestInfo",
+            newSchema: "CARD");
+
+        migrationBuilder.RenameTable(
+            name: "ImportFileInfo",
+            newName: "ImportFileInfo",
+            newSchema: "CARD");
+
+        migrationBuilder.AlterColumn<Guid>(
+            name: "Id",
+            schema: "CARD",
+            table: "ApiLogs",
+            type: "uniqueidentifier",
+            nullable: false,
+            defaultValue: new Guid("78c8f4e9-d8d0-4973-8eb0-0d166fe923b5"),
+            oldClrType: typeof(Guid),
+            oldType: "uniqueidentifier",
+            oldDefaultValue: new Guid("c27da9fc-8dae-4a12-a186-9b71e2b13be3"));
+
+        migrationBuilder.AlterColumn<string>(
+            name: "TelNumber",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(11)",
+            maxLength: 11,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "PostCode",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(10)",
+            maxLength: 10,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Name",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(33)",
+            maxLength: 33,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "MeliCode1",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(10)",
+            maxLength: 10,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "IdBranch2",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "IdBranch1",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Family",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(33)",
+            maxLength: 33,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CustomerNo2",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(10)",
+            maxLength: 10,
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CustomerNo1",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(10)",
+            maxLength: 10,
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CardNo",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(16)",
+            maxLength: 16,
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Address",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(200)",
+            maxLength: 200,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "AccNo",
+            schema: "CARD",
+            table: "TempFileImportInfo",
+            type: "nvarchar(13)",
+            maxLength: 13,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "PostCode",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(10)",
+            maxLength: 10,
+            nullable: false,
+            oldClrType: typeof(long),
+            oldType: "bigint");
+
+        migrationBuilder.AlterColumn<string>(
+            name: "NationalCode",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(10)",
+            maxLength: 10,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Mobile",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(11)",
+            maxLength: 11,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "LastName",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(33)",
+            maxLength: 33,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FirstName",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(33)",
+            maxLength: 33,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CustomerNumber",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(11)",
+            maxLength: 11,
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CardNumber",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(16)",
+            maxLength: 16,
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Address",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(200)",
+            maxLength: 200,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "AccountNumber",
+            schema: "CARD",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(13)",
+            maxLength: 13,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FileType",
+            schema: "CARD",
+            table: "ImportFileInfo",
+            type: "nvarchar(6)",
+            maxLength: 6,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FileSerie",
+            schema: "CARD",
+            table: "ImportFileInfo",
+            type: "nvarchar(4)",
+            maxLength: 4,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FileName",
+            schema: "CARD",
+            table: "ImportFileInfo",
+            type: "nvarchar(40)",
+            maxLength: 40,
+            nullable: false,
+            defaultValue: "",
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)",
+            oldNullable: true);
+    }
+
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.RenameTable(
+            name: "TempFileImportInfo",
+            schema: "CARD",
+            newName: "TempFileImportInfo");
+
+        migrationBuilder.RenameTable(
+            name: "OnlineCardRequestInfo",
+            schema: "CARD",
+            newName: "OnlineCardRequestInfo");
+
+        migrationBuilder.RenameTable(
+            name: "ImportFileInfo",
+            schema: "CARD",
+            newName: "ImportFileInfo");
+
+        migrationBuilder.AlterColumn<Guid>(
+            name: "Id",
+            schema: "CARD",
+            table: "ApiLogs",
+            type: "uniqueidentifier",
+            nullable: false,
+            defaultValue: new Guid("c27da9fc-8dae-4a12-a186-9b71e2b13be3"),
+            oldClrType: typeof(Guid),
+            oldType: "uniqueidentifier",
+            oldDefaultValue: new Guid("78c8f4e9-d8d0-4973-8eb0-0d166fe923b5"));
+
+        migrationBuilder.AlterColumn<string>(
+            name: "TelNumber",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(11)",
+            oldMaxLength: 11);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "PostCode",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(10)",
+            oldMaxLength: 10);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Name",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(33)",
+            oldMaxLength: 33);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "MeliCode1",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(10)",
+            oldMaxLength: 10);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "IdBranch2",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)");
+
+        migrationBuilder.AlterColumn<string>(
+            name: "IdBranch1",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(max)");
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Family",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(33)",
+            oldMaxLength: 33);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CustomerNo2",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(10)",
+            oldMaxLength: 10,
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CustomerNo1",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(10)",
+            oldMaxLength: 10,
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CardNo",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(16)",
+            oldMaxLength: 16,
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Address",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(200)",
+            oldMaxLength: 200);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "AccNo",
+            table: "TempFileImportInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(13)",
+            oldMaxLength: 13);
+
+        migrationBuilder.AlterColumn<long>(
+            name: "PostCode",
+            table: "OnlineCardRequestInfo",
+            type: "bigint",
+            nullable: false,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(10)",
+            oldMaxLength: 10);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "NationalCode",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(10)",
+            oldMaxLength: 10);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Mobile",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(11)",
+            oldMaxLength: 11);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "LastName",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(33)",
+            oldMaxLength: 33);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FirstName",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(33)",
+            oldMaxLength: 33);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CustomerNumber",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(11)",
+            oldMaxLength: 11,
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "CardNumber",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(16)",
+            oldMaxLength: 16,
+            oldNullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "Address",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(200)",
+            oldMaxLength: 200);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "AccountNumber",
+            table: "OnlineCardRequestInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(13)",
+            oldMaxLength: 13);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FileType",
+            table: "ImportFileInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(6)",
+            oldMaxLength: 6);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FileSerie",
+            table: "ImportFileInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(4)",
+            oldMaxLength: 4);
+
+        migrationBuilder.AlterColumn<string>(
+            name: "FileName",
+            table: "ImportFileInfo",
+            type: "nvarchar(max)",
+            nullable: true,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(40)",
+            oldMaxLength: 40);
+    }
+   
