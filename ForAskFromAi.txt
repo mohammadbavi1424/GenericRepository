@@ -1,25 +1,24 @@
-dbug: 19/08/1405 16:52:36.223 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+dbug: 19/08/1405 17:28:22.409 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
       Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
-      ALTER TABLE [CARD].[FileImportLogs] ADD CONSTRAINT [FK_FileImportLogs_State_StateId] FOREIGN KEY ([StateId]) REFERENCES [CARD].[State] ([Id]) ON DELETE CASCADE;
-Failed executing DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
-ALTER TABLE [CARD].[FileImportLogs] ADD CONSTRAINT [FK_FileImportLogs_State_StateId] FOREIGN KEY ([StateId]) REFERENCES [CARD].[State] ([Id]) ON DELETE CASCADE;
-fail: 19/08/1405 16:52:36.229 RelationalEventId.CommandError[20102] (Microsoft.EntityFrameworkCore.Database.Command) 
-      Failed executing DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
-      ALTER TABLE [CARD].[FileImportLogs] ADD CONSTRAINT [FK_FileImportLogs_State_StateId] FOREIGN KEY ([StateId]) REFERENCES [CARD].[State] ([Id]) ON DELETE CASCADE;
-dbug: 19/08/1405 16:52:36.230 RelationalEventId.TransactionDisposed[20204] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+      ALTER TABLE [States] DROP CONSTRAINT [FK_State_Operation_OperationId];
+Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE [States] DROP CONSTRAINT [FK_State_Operation_OperationId];
+fail: 19/08/1405 17:28:22.413 RelationalEventId.CommandError[20102] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [States] DROP CONSTRAINT [FK_State_Operation_OperationId];
+dbug: 19/08/1405 17:28:23.133 RelationalEventId.TransactionDisposed[20204] (Microsoft.EntityFrameworkCore.Database.Transaction) 
       Disposing transaction.
-dbug: 19/08/1405 16:52:36.230 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 19/08/1405 17:28:23.133 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
-dbug: 19/08/1405 16:52:36.231 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 19/08/1405 17:28:23.133 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
-dbug: 19/08/1405 16:52:36.232 CoreEventId.ContextDisposed[10407] (Microsoft.EntityFrameworkCore.Infrastructure) 
+dbug: 19/08/1405 17:28:23.135 CoreEventId.ContextDisposed[10407] (Microsoft.EntityFrameworkCore.Infrastructure) 
       'CardIssuanceWebDbContext' disposed.
-dbug: 19/08/1405 16:52:36.233 RelationalEventId.ConnectionDisposing[20007] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 19/08/1405 17:28:23.136 RelationalEventId.ConnectionDisposing[20007] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Disposing connection to database 'CardIssuanceTest' on server '.\sql2022'.
-dbug: 19/08/1405 16:52:36.234 RelationalEventId.ConnectionDisposed[20008] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 19/08/1405 17:28:23.137 RelationalEventId.ConnectionDisposed[20008] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Disposed connection to database '' on server '' (0ms).
-Microsoft.Data.SqlClient.SqlException (0x80131904): Foreign key 'FK_FileImportLogs_State_StateId' references invalid table 'CARD.State'.
-Could not create constraint or index. See previous errors.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot find the object "States" because it does not exist or you do not have permissions.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
@@ -35,9 +34,6 @@ Could not create constraint or index. See previous errors.
    at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabaseImpl(String targetMigration, String connectionString, String contextType)
    at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabase.<>c__DisplayClass0_0.<.ctor>b__0()
    at Microsoft.EntityFrameworkCore.Design.OperationExecutor.OperationBase.Execute(Action action)
-ClientConnectionId:12d1cb72-ec7d-4957-aac9-caf9a032d0a2
-Error Number:1767,State:0,Class:16
-Foreign key 'FK_FileImportLogs_State_StateId' references invalid table 'CARD.State'.
-Could not create constraint or index. See previous errors.
-
-چرا ؟
+ClientConnectionId:5caae7d7-2b83-477b-8125-ef4482d222e4
+Error Number:4902,State:1,Class:16
+Cannot find the object "States" because it does not exist or you do not have permissions.
