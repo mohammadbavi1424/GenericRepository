@@ -1,557 +1,186 @@
-    protected override void Up(MigrationBuilder migrationBuilder)
-    {
-        migrationBuilder.RenameTable(
-            name: "TempFileImportInfo",
-            newName: "TempFileImportInfo",
-            newSchema: "CARD");
-
-        migrationBuilder.RenameTable(
-            name: "OnlineCardRequestInfo",
-            newName: "OnlineCardRequestInfo",
-            newSchema: "CARD");
-
-        migrationBuilder.RenameTable(
-            name: "ImportFileInfo",
-            newName: "ImportFileInfo",
-            newSchema: "CARD");
-
-        migrationBuilder.AlterColumn<Guid>(
-            name: "Id",
-            schema: "CARD",
-            table: "ApiLogs",
-            type: "uniqueidentifier",
-            nullable: false,
-            defaultValue: new Guid("78c8f4e9-d8d0-4973-8eb0-0d166fe923b5"),
-            oldClrType: typeof(Guid),
-            oldType: "uniqueidentifier",
-            oldDefaultValue: new Guid("c27da9fc-8dae-4a12-a186-9b71e2b13be3"));
-
-        migrationBuilder.AlterColumn<string>(
-            name: "TelNumber",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(11)",
-            maxLength: 11,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "PostCode",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(10)",
-            maxLength: 10,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Name",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(33)",
-            maxLength: 33,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "MeliCode1",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(10)",
-            maxLength: 10,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "IdBranch2",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "IdBranch1",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Family",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(33)",
-            maxLength: 33,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CustomerNo2",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(10)",
-            maxLength: 10,
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CustomerNo1",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(10)",
-            maxLength: 10,
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CardNo",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(16)",
-            maxLength: 16,
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Address",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(200)",
-            maxLength: 200,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "AccNo",
-            schema: "CARD",
-            table: "TempFileImportInfo",
-            type: "nvarchar(13)",
-            maxLength: 13,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "PostCode",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(10)",
-            maxLength: 10,
-            nullable: false,
-            oldClrType: typeof(long),
-            oldType: "bigint");
-
-        migrationBuilder.AlterColumn<string>(
-            name: "NationalCode",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(10)",
-            maxLength: 10,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Mobile",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(11)",
-            maxLength: 11,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "LastName",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(33)",
-            maxLength: 33,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FirstName",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(33)",
-            maxLength: 33,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CustomerNumber",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(11)",
-            maxLength: 11,
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CardNumber",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(16)",
-            maxLength: 16,
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Address",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(200)",
-            maxLength: 200,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "AccountNumber",
-            schema: "CARD",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(13)",
-            maxLength: 13,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FileType",
-            schema: "CARD",
-            table: "ImportFileInfo",
-            type: "nvarchar(6)",
-            maxLength: 6,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FileSerie",
-            schema: "CARD",
-            table: "ImportFileInfo",
-            type: "nvarchar(4)",
-            maxLength: 4,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FileName",
-            schema: "CARD",
-            table: "ImportFileInfo",
-            type: "nvarchar(40)",
-            maxLength: 40,
-            nullable: false,
-            defaultValue: "",
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)",
-            oldNullable: true);
-    }
-
-    /// <inheritdoc />
-    protected override void Down(MigrationBuilder migrationBuilder)
-    {
-        migrationBuilder.RenameTable(
-            name: "TempFileImportInfo",
-            schema: "CARD",
-            newName: "TempFileImportInfo");
-
-        migrationBuilder.RenameTable(
-            name: "OnlineCardRequestInfo",
-            schema: "CARD",
-            newName: "OnlineCardRequestInfo");
-
-        migrationBuilder.RenameTable(
-            name: "ImportFileInfo",
-            schema: "CARD",
-            newName: "ImportFileInfo");
-
-        migrationBuilder.AlterColumn<Guid>(
-            name: "Id",
-            schema: "CARD",
-            table: "ApiLogs",
-            type: "uniqueidentifier",
-            nullable: false,
-            defaultValue: new Guid("c27da9fc-8dae-4a12-a186-9b71e2b13be3"),
-            oldClrType: typeof(Guid),
-            oldType: "uniqueidentifier",
-            oldDefaultValue: new Guid("78c8f4e9-d8d0-4973-8eb0-0d166fe923b5"));
-
-        migrationBuilder.AlterColumn<string>(
-            name: "TelNumber",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(11)",
-            oldMaxLength: 11);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "PostCode",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(10)",
-            oldMaxLength: 10);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Name",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(33)",
-            oldMaxLength: 33);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "MeliCode1",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(10)",
-            oldMaxLength: 10);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "IdBranch2",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)");
-
-        migrationBuilder.AlterColumn<string>(
-            name: "IdBranch1",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(max)");
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Family",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(33)",
-            oldMaxLength: 33);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CustomerNo2",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(10)",
-            oldMaxLength: 10,
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CustomerNo1",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(10)",
-            oldMaxLength: 10,
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CardNo",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(16)",
-            oldMaxLength: 16,
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Address",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(200)",
-            oldMaxLength: 200);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "AccNo",
-            table: "TempFileImportInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(13)",
-            oldMaxLength: 13);
-
-        migrationBuilder.AlterColumn<long>(
-            name: "PostCode",
-            table: "OnlineCardRequestInfo",
-            type: "bigint",
-            nullable: false,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(10)",
-            oldMaxLength: 10);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "NationalCode",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(10)",
-            oldMaxLength: 10);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Mobile",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(11)",
-            oldMaxLength: 11);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "LastName",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(33)",
-            oldMaxLength: 33);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FirstName",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(33)",
-            oldMaxLength: 33);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CustomerNumber",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(11)",
-            oldMaxLength: 11,
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "CardNumber",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(16)",
-            oldMaxLength: 16,
-            oldNullable: true);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "Address",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(200)",
-            oldMaxLength: 200);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "AccountNumber",
-            table: "OnlineCardRequestInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(13)",
-            oldMaxLength: 13);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FileType",
-            table: "ImportFileInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(6)",
-            oldMaxLength: 6);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FileSerie",
-            table: "ImportFileInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(4)",
-            oldMaxLength: 4);
-
-        migrationBuilder.AlterColumn<string>(
-            name: "FileName",
-            table: "ImportFileInfo",
-            type: "nvarchar(max)",
-            nullable: true,
-            oldClrType: typeof(string),
-            oldType: "nvarchar(40)",
-            oldMaxLength: 40);
-    }
-   
+Applying migration '20261110121800_StateAndOperation'.
+19/08/1405 16:39:35.047 RelationalEventId.MigrationApplying[20402] (Microsoft.EntityFrameworkCore.Migrations) 
+      Applying migration '20261110121800_StateAndOperation'.
+dbug: 19/08/1405 16:39:35.108 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 19/08/1405 16:39:35.109 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 19/08/1405 16:39:35.109 RelationalEventId.TransactionStarting[20209] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+      Beginning transaction with isolation level 'Unspecified'.
+dbug: 19/08/1405 16:39:35.109 RelationalEventId.TransactionStarted[20200] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+      Began transaction with isolation level 'ReadCommitted'.
+dbug: 19/08/1405 16:39:36.029 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:36.029 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:36.029 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:36.029 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [Operations] (
+          [Id] bigint NOT NULL IDENTITY,
+          [OperationEngName] nvarchar(max) NOT NULL,
+          [OperationFaName] nvarchar(max) NOT NULL,
+          [OperationCode] nvarchar(max) NOT NULL,
+          CONSTRAINT [PK_Operations] PRIMARY KEY ([Id])
+      );
+19/08/1405 16:39:36.031 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [Operations] (
+          [Id] bigint NOT NULL IDENTITY,
+          [OperationEngName] nvarchar(max) NOT NULL,
+          [OperationFaName] nvarchar(max) NOT NULL,
+          [OperationCode] nvarchar(max) NOT NULL,
+          CONSTRAINT [PK_Operations] PRIMARY KEY ([Id])
+      );
+dbug: 19/08/1405 16:39:36.031 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:36.031 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:36.031 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:36.031 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [States] (
+          [Id] bigint NOT NULL IDENTITY,
+          [StateName] nvarchar(max) NOT NULL,
+          [StateMessage] nvarchar(max) NOT NULL,
+          [StateCode] nvarchar(max) NOT NULL,
+          [MessageColor] nvarchar(max) NOT NULL,
+          [BackgroundColor] nvarchar(max) NOT NULL,
+          [OperationId] bigint NOT NULL,
+          CONSTRAINT [PK_States] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_States_Operations_OperationId] FOREIGN KEY ([OperationId]) REFERENCES [Operations] ([Id]) ON DELETE NO ACTION
+      );
+19/08/1405 16:39:37.047 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1,016ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [States] (
+          [Id] bigint NOT NULL IDENTITY,
+          [StateName] nvarchar(max) NOT NULL,
+          [StateMessage] nvarchar(max) NOT NULL,
+          [StateCode] nvarchar(max) NOT NULL,
+          [MessageColor] nvarchar(max) NOT NULL,
+          [BackgroundColor] nvarchar(max) NOT NULL,
+          [OperationId] bigint NOT NULL,
+          CONSTRAINT [PK_States] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_States_Operations_OperationId] FOREIGN KEY ([OperationId]) REFERENCES [Operations] ([Id]) ON DELETE NO ACTION
+      );
+dbug: 19/08/1405 16:39:37.048 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:37.048 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:37.048 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:37.048 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_States_OperationId] ON [States] ([OperationId]);
+19/08/1405 16:39:37.049 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_States_OperationId] ON [States] ([OperationId]);
+dbug: 19/08/1405 16:39:37.049 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:37.049 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:38.012 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (963ms).
+dbug: 19/08/1405 16:39:38.012 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [CARD].[FileImportLogs] ADD [StateId] bigint NOT NULL DEFAULT CAST(0 AS bigint);
+19/08/1405 16:39:38.014 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [CARD].[FileImportLogs] ADD [StateId] bigint NOT NULL DEFAULT CAST(0 AS bigint);
+dbug: 19/08/1405 16:39:38.014 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:38.014 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:38.014 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:38.014 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [CARD].[FileImportDetails] ADD [RowVersion] rowversion NULL;
+19/08/1405 16:39:38.015 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [CARD].[FileImportDetails] ADD [RowVersion] rowversion NULL;
+dbug: 19/08/1405 16:39:38.015 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:38.015 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:38.015 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:39.091 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      DECLARE @var12 sysname;
+      SELECT @var12 = [d].[name]
+      FROM [sys].[default_constraints] [d]
+      INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+      WHERE ([d].[parent_object_id] = OBJECT_ID(N'[CARD].[ApiLogs]') AND [c].[name] = N'Id');
+      IF @var12 IS NOT NULL EXEC(N'ALTER TABLE [CARD].[ApiLogs] DROP CONSTRAINT [' + @var12 + '];');
+      ALTER TABLE [CARD].[ApiLogs] ADD DEFAULT 'ae464063-202f-4516-bf2a-c8ebb3eaa2d7' FOR [Id];
+19/08/1405 16:39:39.106 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1,091ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      DECLARE @var12 sysname;
+      SELECT @var12 = [d].[name]
+      FROM [sys].[default_constraints] [d]
+      INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+      WHERE ([d].[parent_object_id] = OBJECT_ID(N'[CARD].[ApiLogs]') AND [c].[name] = N'Id');
+      IF @var12 IS NOT NULL EXEC(N'ALTER TABLE [CARD].[ApiLogs] DROP CONSTRAINT [' + @var12 + '];');
+      ALTER TABLE [CARD].[ApiLogs] ADD DEFAULT 'ae464063-202f-4516-bf2a-c8ebb3eaa2d7' FOR [Id];
+dbug: 19/08/1405 16:39:39.107 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:39.107 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:39.107 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 19/08/1405 16:39:39.107 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_FileImportLogs_StateId] ON [CARD].[FileImportLogs] ([StateId]);
+19/08/1405 16:39:39.108 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_FileImportLogs_StateId] ON [CARD].[FileImportLogs] ([StateId]);
+dbug: 19/08/1405 16:39:39.108 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 19/08/1405 16:39:39.845 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (737ms).
+dbug: 19/08/1405 16:39:39.845 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (737ms).
+dbug: 19/08/1405 16:39:39.845 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [CARD].[FileImportLogs] ADD CONSTRAINT [FK_FileImportLogs_State_StateId] FOREIGN KEY ([StateId]) REFERENCES [CARD].[State] ([Id]) ON DELETE CASCADE;
+Failed executing DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE [CARD].[FileImportLogs] ADD CONSTRAINT [FK_FileImportLogs_State_StateId] FOREIGN KEY ([StateId]) REFERENCES [CARD].[State] ([Id]) ON DELETE CASCADE;
+fail: 19/08/1405 16:39:39.851 RelationalEventId.CommandError[20102] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Failed executing DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE [CARD].[FileImportLogs] ADD CONSTRAINT [FK_FileImportLogs_State_StateId] FOREIGN KEY ([StateId]) REFERENCES [CARD].[State] ([Id]) ON DELETE CASCADE;
+dbug: 19/08/1405 16:39:39.851 RelationalEventId.TransactionDisposed[20204] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+      Disposing transaction.
+dbug: 19/08/1405 16:39:39.851 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 19/08/1405 16:39:39.851 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
+dbug: 19/08/1405 16:39:39.852 CoreEventId.ContextDisposed[10407] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      'CardIssuanceWebDbContext' disposed.
+dbug: 19/08/1405 16:39:39.854 RelationalEventId.ConnectionDisposing[20007] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Disposing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 19/08/1405 16:39:39.855 RelationalEventId.ConnectionDisposed[20008] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Disposed connection to database '' on server '' (0ms).
+Microsoft.Data.SqlClient.SqlException (0x80131904): Foreign key 'FK_FileImportLogs_State_StateId' references invalid table 'CARD.State'.
+Could not create constraint or index. See previous errors.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.Design.Internal.MigrationsOperations.UpdateDatabase(String targetMigration, String connectionString, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabaseImpl(String targetMigration, String connectionString, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabase.<>c__DisplayClass0_0.<.ctor>b__0()
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.OperationBase.Execute(Action action)
+ClientConnectionId:7709d0d7-8488-4249-8cfe-49997f8672d7
+Error Number:1767,State:0,Class:16
+Foreign key 'FK_FileImportLogs_State_StateId' references invalid table 'CARD.State'.
+Could not create constraint or index. See previous errors.
