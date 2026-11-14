@@ -1,22 +1,247 @@
-dbug: 19/08/1405 17:28:22.409 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+Build started...
+Build succeeded.
+dbug: 23/08/1405 07:38:06.089 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'Branch' to 'FileImportDetail' has been configured by convention because there are multiple properties on one entity type - {'FileImportDetailBranch1', 'FileImportDetailBranch2'} that could be matched with the properties on the other entity type - {'Branch1', 'Branch2'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.208 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'FileImportDetail' to 'Branch' has been configured by convention because there are multiple properties on one entity type - {'Branch1', 'Branch2'} that could be matched with the properties on the other entity type - {'FileImportDetailBranch1', 'FileImportDetailBranch2'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.248 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.262 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.266 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.269 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.270 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.276 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.277 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.640 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'User' to 'User' has been configured by convention because there are multiple properties on one entity type - {'CreatorUser'} that could be matched with the properties on the other entity type - {'DeleterUser', 'LastModifierUser'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.695 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'FileImportDetail' to 'Branch' has been configured by convention because there are multiple properties on one entity type - {'Branch1', 'Branch2'} that could be matched with the properties on the other entity type - {'FileImportDetailBranch1', 'FileImportDetailBranch2'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+dbug: 23/08/1405 07:38:06.696 CoreEventId.MultipleNavigationProperties[10607] (Microsoft.EntityFrameworkCore.Model) 
+      No relationship from 'Branch' to 'FileImportDetail' has been configured by convention because there are multiple properties on one entity type - {'FileImportDetailBranch1', 'FileImportDetailBranch2'} that could be matched with the properties on the other entity type - {'Branch1', 'Branch2'}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+23/08/1405 07:38:06.920 CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning[10622] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      Entity 'FileSnapShot' has a global query filter defined and is the required end of a relationship with the entity 'FileSnapShotHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+dbug: 23/08/1405 07:38:07.039 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'FeatureSetting.Discriminator' was created in shadow state because there are no eligible CLR members with a matching name.
+23/08/1405 07:38:07.087 RelationalEventId.ModelValidationKeyDefaultValueWarning[20600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      Property 'Id' on entity type 'ApiLogs' is part of a primary or alternate key, but has a constant default value set. Constant default values are not useful for primary or alternate keys since these properties must always have non-null unique values.
+23/08/1405 07:38:07.093 SqlServerEventId.DecimalTypeDefaultWarning[30000] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      No store type was specified for the decimal property 'CreditAmount' on entity type 'ImportFileInfo'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+23/08/1405 07:38:07.093 SqlServerEventId.DecimalTypeDefaultWarning[30000] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      No store type was specified for the decimal property 'DebitAmount' on entity type 'ImportFileInfo'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+dbug: 23/08/1405 07:38:07.330 CoreEventId.ContextInitialized[10403] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      Entity Framework Core 8.0.16 initialized 'CardIssuanceWebDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.16' with options: None
+dbug: 23/08/1405 07:38:07.348 RelationalEventId.ConnectionCreating[20005] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Creating DbConnection.
+dbug: 23/08/1405 07:38:07.387 RelationalEventId.ConnectionCreated[20006] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Created DbConnection. (36ms).
+dbug: 23/08/1405 07:38:07.389 RelationalEventId.MigrateUsingConnection[20400] (Microsoft.EntityFrameworkCore.Migrations) 
+      Migrating using database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.397 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.540 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.545 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 23/08/1405 07:38:07.551 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (4ms).
+dbug: 23/08/1405 07:38:07.552 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (9ms).
+dbug: 23/08/1405 07:38:07.557 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+23/08/1405 07:38:07.579 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+dbug: 23/08/1405 07:38:07.581 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.587 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (4ms).
+dbug: 23/08/1405 07:38:07.589 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteScalar'.
+dbug: 23/08/1405 07:38:07.589 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteScalar' (0ms).
+dbug: 23/08/1405 07:38:07.589 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteScalar' (0ms).
+dbug: 23/08/1405 07:38:07.589 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.590 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.590 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+23/08/1405 07:38:07.604 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+dbug: 23/08/1405 07:38:07.625 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.626 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
+dbug: 23/08/1405 07:38:07.627 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.627 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.627 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 23/08/1405 07:38:07.627 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:07.627 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:07.627 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+23/08/1405 07:38:07.628 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+dbug: 23/08/1405 07:38:07.628 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:07.628 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
+dbug: 23/08/1405 07:38:07.629 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteScalar'.
+dbug: 23/08/1405 07:38:07.629 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteScalar' (0ms).
+dbug: 23/08/1405 07:38:07.629 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteScalar' (0ms).
+dbug: 23/08/1405 07:38:08.594 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:08.594 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:08.594 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+23/08/1405 07:38:08.595 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+dbug: 23/08/1405 07:38:08.595 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:08.595 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
+dbug: 23/08/1405 07:38:08.605 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:08.605 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:08.605 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+dbug: 23/08/1405 07:38:08.606 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+dbug: 23/08/1405 07:38:08.606 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+dbug: 23/08/1405 07:38:08.606 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+23/08/1405 07:38:08.610 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+dbug: 23/08/1405 07:38:09.658 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:09.660 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'CardIssuanceTest' on server '.\sql2022' is being disposed after spending 2ms reading results.
+dbug: 23/08/1405 07:38:09.660 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:09.660 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
+Applying migration '20261110135119_StateAndOperation2'.
+23/08/1405 07:38:09.671 RelationalEventId.MigrationApplying[20402] (Microsoft.EntityFrameworkCore.Migrations) 
+      Applying migration '20261110135119_StateAndOperation2'.
+dbug: 23/08/1405 07:38:09.891 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:09.891 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'CardIssuanceTest' on server '.\sql2022'.
+dbug: 23/08/1405 07:38:09.893 RelationalEventId.TransactionStarting[20209] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+      Beginning transaction with isolation level 'Unspecified'.
+dbug: 23/08/1405 07:38:09.898 RelationalEventId.TransactionStarted[20200] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+      Began transaction with isolation level 'ReadCommitted'.
+dbug: 23/08/1405 07:38:09.898 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 23/08/1405 07:38:09.899 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:09.899 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:09.899 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [CARD].[Operations] (
+          [Id] bigint NOT NULL IDENTITY,
+          [OperationEngName] nvarchar(max) NOT NULL,
+          [OperationFaName] nvarchar(max) NOT NULL,
+          [OperationCode] nvarchar(max) NOT NULL,
+          CONSTRAINT [PK_Operations] PRIMARY KEY ([Id])
+      );
+23/08/1405 07:38:10.599 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (699ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [CARD].[Operations] (
+          [Id] bigint NOT NULL IDENTITY,
+          [OperationEngName] nvarchar(max) NOT NULL,
+          [OperationFaName] nvarchar(max) NOT NULL,
+          [OperationCode] nvarchar(max) NOT NULL,
+          CONSTRAINT [PK_Operations] PRIMARY KEY ([Id])
+      );
+dbug: 23/08/1405 07:38:10.599 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 23/08/1405 07:38:10.599 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:10.599 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:10.600 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [CARD].[States] (
+          [Id] bigint NOT NULL IDENTITY,
+          [StateName] nvarchar(max) NOT NULL,
+          [StateMessage] nvarchar(max) NOT NULL,
+          [StateCode] nvarchar(max) NOT NULL,
+          [MessageColor] nvarchar(max) NOT NULL,
+          [BackgroundColor] nvarchar(max) NOT NULL,
+          [OperationId] bigint NOT NULL,
+          CONSTRAINT [PK_States] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_States_Operations_OperationId] FOREIGN KEY ([OperationId]) REFERENCES [CARD].[Operations] ([Id]) ON DELETE NO ACTION
+      );
+23/08/1405 07:38:10.602 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [CARD].[States] (
+          [Id] bigint NOT NULL IDENTITY,
+          [StateName] nvarchar(max) NOT NULL,
+          [StateMessage] nvarchar(max) NOT NULL,
+          [StateCode] nvarchar(max) NOT NULL,
+          [MessageColor] nvarchar(max) NOT NULL,
+          [BackgroundColor] nvarchar(max) NOT NULL,
+          [OperationId] bigint NOT NULL,
+          CONSTRAINT [PK_States] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_States_Operations_OperationId] FOREIGN KEY ([OperationId]) REFERENCES [CARD].[Operations] ([Id]) ON DELETE NO ACTION
+      );
+dbug: 23/08/1405 07:38:11.593 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteNonQuery'.
+dbug: 23/08/1405 07:38:11.593 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:11.593 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteNonQuery' (0ms).
+dbug: 23/08/1405 07:38:11.593 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
       Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
       ALTER TABLE [States] DROP CONSTRAINT [FK_State_Operation_OperationId];
-Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+Failed executing DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
 ALTER TABLE [States] DROP CONSTRAINT [FK_State_Operation_OperationId];
-fail: 19/08/1405 17:28:22.413 RelationalEventId.CommandError[20102] (Microsoft.EntityFrameworkCore.Database.Command) 
-      Failed executing DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+fail: 23/08/1405 07:38:11.599 RelationalEventId.CommandError[20102] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Failed executing DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
       ALTER TABLE [States] DROP CONSTRAINT [FK_State_Operation_OperationId];
-dbug: 19/08/1405 17:28:23.133 RelationalEventId.TransactionDisposed[20204] (Microsoft.EntityFrameworkCore.Database.Transaction) 
+dbug: 23/08/1405 07:38:11.602 RelationalEventId.TransactionDisposed[20204] (Microsoft.EntityFrameworkCore.Database.Transaction) 
       Disposing transaction.
-dbug: 19/08/1405 17:28:23.133 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 23/08/1405 07:38:11.602 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Closing connection to database 'CardIssuanceTest' on server '.\sql2022'.
-dbug: 19/08/1405 17:28:23.133 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 23/08/1405 07:38:11.602 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Closed connection to database 'CardIssuanceTest' on server '.\sql2022' (0ms).
-dbug: 19/08/1405 17:28:23.135 CoreEventId.ContextDisposed[10407] (Microsoft.EntityFrameworkCore.Infrastructure) 
+dbug: 23/08/1405 07:38:11.603 CoreEventId.ContextDisposed[10407] (Microsoft.EntityFrameworkCore.Infrastructure) 
       'CardIssuanceWebDbContext' disposed.
-dbug: 19/08/1405 17:28:23.136 RelationalEventId.ConnectionDisposing[20007] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 23/08/1405 07:38:11.605 RelationalEventId.ConnectionDisposing[20007] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Disposing connection to database 'CardIssuanceTest' on server '.\sql2022'.
-dbug: 19/08/1405 17:28:23.137 RelationalEventId.ConnectionDisposed[20008] (Microsoft.EntityFrameworkCore.Database.Connection) 
+dbug: 23/08/1405 07:38:11.606 RelationalEventId.ConnectionDisposed[20008] (Microsoft.EntityFrameworkCore.Database.Connection) 
       Disposed connection to database '' on server '' (0ms).
 Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot find the object "States" because it does not exist or you do not have permissions.
    at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -34,6 +259,6 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot find the object "Stat
    at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabaseImpl(String targetMigration, String connectionString, String contextType)
    at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabase.<>c__DisplayClass0_0.<.ctor>b__0()
    at Microsoft.EntityFrameworkCore.Design.OperationExecutor.OperationBase.Execute(Action action)
-ClientConnectionId:5caae7d7-2b83-477b-8125-ef4482d222e4
+ClientConnectionId:4890e07d-55fa-4767-a97b-582846cf2733
 Error Number:4902,State:1,Class:16
 Cannot find the object "States" because it does not exist or you do not have permissions.
